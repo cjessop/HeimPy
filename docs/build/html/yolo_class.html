@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>yolo_class module &#8212; Heimdall  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css?v=87629129" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="TestClassifiers module" href="TestClassifiers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="TestClassifiers.html" title="TestClassifiers module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">yolo_class module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-yolo_class">
+<span id="yolo-class-module"></span><h1>yolo_class module<a class="headerlink" href="#module-yolo_class" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yolo_class.DataSynth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yolo_class.</span></span><span class="sig-name descname"><span class="pre">DataSynth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_main</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for generating synthetic datasets, including images and YOLO annotations.</p>
+<p>This class handles the creation of composite images with multiple objects, the addition of noise to 
+backgrounds, and the generation of corresponding YOLO annotations. It is used to create training datasets 
+for object detection models, supporting various transformations and ensuring that the generated datasets 
+meet specified criteria for object placement and overlap.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.add_obj">
+<span class="sig-name descname"><span class="pre">add_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.add_obj" title="Link to this definition">¶</a></dt>
+<dd><p>Adds an object to a composite image and updates the mask.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>img_comp (numpy.ndarray): Composite image.
+mask_comp (numpy.ndarray): Composite mask.
+img (numpy.ndarray): Object image.
+mask (numpy.ndarray): Object mask.
+x (int): X-coordinate for placing the object.
+y (int): Y-coordinate for placing the object.
+idx (int): Object index.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: Updated composite image, composite mask, and added object mask.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.check_areas">
+<span class="sig-name descname"><span class="pre">check_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_areas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.check_areas" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the object areas in the mask meet the overlap criteria.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mask_comp (numpy.ndarray): Composite mask.
+obj_areas (list): List of object areas.
+overlap_degree (float, optional): Allowed overlap degree. Defaults to 0.3.</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: True if areas are acceptable, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.create_bg_with_noise">
+<span class="sig-name descname"><span class="pre">create_bg_with_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bg_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1920</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1080</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_objs_to_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longest_bg_noise_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longest_bg_noise_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blank_bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.create_bg_with_noise" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a background image with added noise objects.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>bg_max (int, optional): Maximum dimension of the background. Defaults to 1920.
+bg_min (int, optional): Minimum dimension of the background. Defaults to 1080.
+max_objs_to_add (int, optional): Maximum number of objects to add. Defaults to 60.
+longest_bg_noise_max (int, optional): Maximum size of noise objects. Defaults to 1000.
+longest_bg_noise_min (int, optional): Minimum size of noise objects. Defaults to 200.
+blank_bg (bool, optional): Whether to use a blank background. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Background image with noise objects added.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.create_composition">
+<span class="sig-name descname"><span class="pre">create_composition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_comp_bg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_objs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_attempts_per_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.create_composition" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a composition of multiple objects on a background.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>img_comp_bg (numpy.ndarray): Background image.
+max_objs (int, optional): Maximum number of objects to add. Defaults to 15.
+overlap_degree (float, optional): Allowed overlap degree. Defaults to 0.2.
+max_attempts_per_obj (int, optional): Maximum attempts to place each object. Defaults to 10.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: Final composite image, composite mask, labels, and object areas.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.create_yolo_annotations">
+<span class="sig-name descname"><span class="pre">create_yolo_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_comp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.create_yolo_annotations" title="Link to this definition">¶</a></dt>
+<dd><p>Creates YOLO annotations for the objects in the composite image.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>mask_comp (numpy.ndarray): Composite mask.
+labels_comp (list): List of labels for the objects.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: YOLO annotations for the objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.file_handle">
+<span class="sig-name descname"><span class="pre">file_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.file_handle" title="Link to this definition">¶</a></dt>
+<dd><p>Handles file operations for the object dictionary.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>tuple: Folder name, image paths, mask paths, background image paths, noise image paths, noise mask paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.generate_dataset">
+<span class="sig-name descname"><span class="pre">generate_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.generate_dataset" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a synthetic dataset with images and YOLO annotations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>folder (str): Folder to save the dataset.
+split (str, optional): Dataset split (‘train’, ‘test’, etc.). Defaults to ‘train’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.get_im_and_mask">
+<span class="sig-name descname"><span class="pre">get_im_and_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.get_im_and_mask" title="Link to this definition">¶</a></dt>
+<dd><p>Reads and processes an image and its corresponding mask.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>tuple: Processed image and mask.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.resize_img">
+<span class="sig-name descname"><span class="pre">resize_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.resize_img" title="Link to this definition">¶</a></dt>
+<dd><p>Resizes an image to the desired dimensions.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>img (numpy.ndarray): Image to be resized.
+desired_max (int): Desired maximum dimension.
+desired_min (int, optional): Desired minimum dimension. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Resized image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.resize_transform_obj">
+<span class="sig-name descname"><span class="pre">resize_transform_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longest_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longest_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.resize_transform_obj" title="Link to this definition">¶</a></dt>
+<dd><p>Resizes and applies transformations to an object image and mask.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>img (numpy.ndarray): Object image to be resized.
+mask (numpy.ndarray): Object mask to be resized.
+longest_min (int): Minimum dimension for resizing.
+longest_max (int): Maximum dimension for resizing.
+transforms (albumentations.Compose, optional): Additional transformations to apply. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: Transformed image and mask.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.DataSynth.transforms">
+<span class="sig-name descname"><span class="pre">transforms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.DataSynth.transforms" title="Link to this definition">¶</a></dt>
+<dd><p>Defines the transformations to apply to background and object images.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>tuple: Transformations for objects and background objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yolo_class.</span></span><span class="sig-name descname"><span class="pre">Object_tracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for tracking objects in video sequences using a YOLO model.</p>
+<p>This class allows for detection and tracking of objects across video frames, selection and filtering of 
+objects based on keypoints, and interpolation of object positions. It also provides functionality to 
+draw bounding boxes around detected objects in video frames and identify frames where objects are hit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.choose_and_filter">
+<span class="sig-name descname"><span class="pre">choose_and_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keypoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_detections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.choose_and_filter" title="Link to this definition">¶</a></dt>
+<dd><p>Chooses and filters object detections based on keypoints.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>keypoints (numpy.ndarray): Array of keypoints.
+obj_detections (list): List of object detections.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: Filtered object detections.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.choose_obj">
+<span class="sig-name descname"><span class="pre">choose_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keypoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.choose_obj" title="Link to this definition">¶</a></dt>
+<dd><p>Chooses the object closest to the keypoints from the first frame’s detections.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>keypoints (numpy.ndarray): Array of keypoints.
+obj_dict (dict): Dictionary of object detections for the first frame.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: List of chosen object IDs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.draw_bbox">
+<span class="sig-name descname"><span class="pre">draw_bbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">video_frames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_detection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.draw_bbox" title="Link to this definition">¶</a></dt>
+<dd><p>Draws bounding boxes around detected objects on video frames.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>video_frames (list): List of video frames.
+obj_detection (list): List of detected objects with bounding boxes.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: Video frames with bounding boxes drawn.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.frame_detect">
+<span class="sig-name descname"><span class="pre">frame_detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.frame_detect" title="Link to this definition">¶</a></dt>
+<dd><p>Detects objects in a single video frame.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame (numpy.ndarray): The video frame to analyse.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: Dictionary of detected objects with bounding box coordinates.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.frames_detect">
+<span class="sig-name descname"><span class="pre">frames_detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_from_stub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stub_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.frames_detect" title="Link to this definition">¶</a></dt>
+<dd><p>Detects objects across multiple video frames.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frames (list): List of video frames.
+read_from_stub (bool, optional): If True, reads detections from a stub file. Defaults to False.
+stub_path (str, optional): Path to the stub file. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: List of detected objects across frames.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.get_obj_shot_frames">
+<span class="sig-name descname"><span class="pre">get_obj_shot_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.get_obj_shot_frames" title="Link to this definition">¶</a></dt>
+<dd><p>Identifies the frames where an object appears to be hit based on position changes.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>obj_pos (list): List of object positions across frames.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: Frame numbers where the object is hit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Object_tracker.interp_obj_pos">
+<span class="sig-name descname"><span class="pre">interp_obj_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Object_tracker.interp_obj_pos" title="Link to this definition">¶</a></dt>
+<dd><p>Interpolates object positions between frames to fill in any gaps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>obj_pos (list): List of object positions across frames.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: Interpolated object positions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yolo_class.Utils">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yolo_class.</span></span><span class="sig-name descname"><span class="pre">Utils</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">video_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_vid_frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_vid_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Utils" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A utility class for handling video operations and performing basic image processing tasks.</p>
+<p>The class includes methods to read and save video files, calculate the centre of a bounding box, and 
+compute the distance between two points. It serves as a support class for video and image processing 
+tasks, facilitating operations such as video frame extraction and bounding box manipulation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Utils.calc_distance">
+<span class="sig-name descname"><span class="pre">calc_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Utils.calc_distance" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the Euclidean distance between two points.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>p1 (tuple): Coordinates of the first point.
+p2 (tuple): Coordinates of the second point.</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: Euclidean distance between the two points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Utils.get_box_centre">
+<span class="sig-name descname"><span class="pre">get_box_centre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bbox</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Utils.get_box_centre" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the centre of a bounding box.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>bbox (tuple): Coordinates of the bounding box (x1, y1, x2, y2).</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: Coordinates of the centre of the bounding box (centre_x, centre_y).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Utils.read_video">
+<span class="sig-name descname"><span class="pre">read_video</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Utils.read_video" title="Link to this definition">¶</a></dt>
+<dd><p>Reads video frames from the specified video path.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list: List of video frames.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.Utils.save_video">
+<span class="sig-name descname"><span class="pre">save_video</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.Utils.save_video" title="Link to this definition">¶</a></dt>
+<dd><p>Saves video frames to a specified output path.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yolo_class.YOLO_detector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yolo_class.</span></span><span class="sig-name descname"><span class="pre">YOLO_detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretrained</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_detector" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for detecting keypoints and objects using a YOLO-based model.</p>
+<p>The class provides functionality to predict keypoints in images, draw keypoints on images and video frames, 
+and perform object detection in videos. It uses a pre-trained model for keypoint detection and allows for 
+further customisation and application to different media types.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_detector.draw_keyP">
+<span class="sig-name descname"><span class="pre">draw_keyP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keypoints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_detector.draw_keyP" title="Link to this definition">¶</a></dt>
+<dd><p>Draws keypoints on the given image.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>image (numpy.ndarray): The image on which to draw keypoints.
+keypoints (numpy.ndarray): The keypoints to be drawn.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Image with keypoints drawn.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_detector.draw_keyP_video">
+<span class="sig-name descname"><span class="pre">draw_keyP_video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">video_frames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keypoints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_detector.draw_keyP_video" title="Link to this definition">¶</a></dt>
+<dd><p>Draws keypoints on a series of video frames.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>video_frames (list): List of video frames.
+keypoints (numpy.ndarray): The keypoints to be drawn on each frame.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: List of video frames with keypoints drawn.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_detector.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_detector.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Predicts keypoints for a given image using the model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>image (numpy.ndarray): The input image.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Predicted keypoints.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yolo_class.YOLO_main">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yolo_class.</span></span><span class="sig-name descname"><span class="pre">YOLO_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_capture</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_main" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for managing the YOLO model’s training and application to video streams.</p>
+<p>This class provides methods for training a YOLO model using a dataset, capturing video from a camera 
+for real-time object detection, and processing video streams to apply YOLO-based tracking. It is designed 
+to serve as the main interface for YOLO operations, integrating video processing with object detection 
+and tracking functionalities.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_main.cam_capture">
+<span class="sig-name descname"><span class="pre">cam_capture</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_main.cam_capture" title="Link to this definition">¶</a></dt>
+<dd><p>Captures video from a camera and performs real-time detection using the YOLO model.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_main.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_main.main" title="Link to this definition">¶</a></dt>
+<dd><p>Main method for processing a video, detecting objects, and saving the output video with annotations.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_main.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_main.train" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the YOLO model using the specified dataset.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yolo_class.YOLO_main.video_stream">
+<span class="sig-name descname"><span class="pre">video_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yolo_class.YOLO_main.video_stream" title="Link to this definition">¶</a></dt>
+<dd><p>Processes a video stream and performs object detection using the YOLO model.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">yolo_class module</a><ul>
+<li><a class="reference internal" href="#yolo_class.DataSynth"><code class="docutils literal notranslate"><span class="pre">DataSynth</span></code></a><ul>
+<li><a class="reference internal" href="#yolo_class.DataSynth.add_obj"><code class="docutils literal notranslate"><span class="pre">DataSynth.add_obj()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.check_areas"><code class="docutils literal notranslate"><span class="pre">DataSynth.check_areas()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.create_bg_with_noise"><code class="docutils literal notranslate"><span class="pre">DataSynth.create_bg_with_noise()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.create_composition"><code class="docutils literal notranslate"><span class="pre">DataSynth.create_composition()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.create_yolo_annotations"><code class="docutils literal notranslate"><span class="pre">DataSynth.create_yolo_annotations()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.file_handle"><code class="docutils literal notranslate"><span class="pre">DataSynth.file_handle()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.generate_dataset"><code class="docutils literal notranslate"><span class="pre">DataSynth.generate_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.get_im_and_mask"><code class="docutils literal notranslate"><span class="pre">DataSynth.get_im_and_mask()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.resize_img"><code class="docutils literal notranslate"><span class="pre">DataSynth.resize_img()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.resize_transform_obj"><code class="docutils literal notranslate"><span class="pre">DataSynth.resize_transform_obj()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.DataSynth.transforms"><code class="docutils literal notranslate"><span class="pre">DataSynth.transforms()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker"><code class="docutils literal notranslate"><span class="pre">Object_tracker</span></code></a><ul>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.choose_and_filter"><code class="docutils literal notranslate"><span class="pre">Object_tracker.choose_and_filter()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.choose_obj"><code class="docutils literal notranslate"><span class="pre">Object_tracker.choose_obj()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.draw_bbox"><code class="docutils literal notranslate"><span class="pre">Object_tracker.draw_bbox()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.frame_detect"><code class="docutils literal notranslate"><span class="pre">Object_tracker.frame_detect()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.frames_detect"><code class="docutils literal notranslate"><span class="pre">Object_tracker.frames_detect()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.get_obj_shot_frames"><code class="docutils literal notranslate"><span class="pre">Object_tracker.get_obj_shot_frames()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Object_tracker.interp_obj_pos"><code class="docutils literal notranslate"><span class="pre">Object_tracker.interp_obj_pos()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yolo_class.Utils"><code class="docutils literal notranslate"><span class="pre">Utils</span></code></a><ul>
+<li><a class="reference internal" href="#yolo_class.Utils.calc_distance"><code class="docutils literal notranslate"><span class="pre">Utils.calc_distance()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Utils.get_box_centre"><code class="docutils literal notranslate"><span class="pre">Utils.get_box_centre()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Utils.read_video"><code class="docutils literal notranslate"><span class="pre">Utils.read_video()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.Utils.save_video"><code class="docutils literal notranslate"><span class="pre">Utils.save_video()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yolo_class.YOLO_detector"><code class="docutils literal notranslate"><span class="pre">YOLO_detector</span></code></a><ul>
+<li><a class="reference internal" href="#yolo_class.YOLO_detector.draw_keyP"><code class="docutils literal notranslate"><span class="pre">YOLO_detector.draw_keyP()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.YOLO_detector.draw_keyP_video"><code class="docutils literal notranslate"><span class="pre">YOLO_detector.draw_keyP_video()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.YOLO_detector.predict"><code class="docutils literal notranslate"><span class="pre">YOLO_detector.predict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#yolo_class.YOLO_main"><code class="docutils literal notranslate"><span class="pre">YOLO_main</span></code></a><ul>
+<li><a class="reference internal" href="#yolo_class.YOLO_main.cam_capture"><code class="docutils literal notranslate"><span class="pre">YOLO_main.cam_capture()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.YOLO_main.main"><code class="docutils literal notranslate"><span class="pre">YOLO_main.main()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.YOLO_main.train"><code class="docutils literal notranslate"><span class="pre">YOLO_main.train()</span></code></a></li>
+<li><a class="reference internal" href="#yolo_class.YOLO_main.video_stream"><code class="docutils literal notranslate"><span class="pre">YOLO_main.video_stream()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="TestClassifiers.html"
+                          title="previous chapter">TestClassifiers module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/yolo_class.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="TestClassifiers.html" title="TestClassifiers module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">yolo_class module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Chris Jessop.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+---
+-data:
+  data: "heart.csv"
+  encode: True
+-model:
+  all: True
+  model: "RF"
+  search: False
+  save: True
+  save_model_name: "model_RF.pkl"
+  cross_val: False
+  confusion: True
+-target:
+  target: 'output'
+-post_processing:
+  saved_model: None
+  predict: False
+  feature: "caa"
+  univariate: False
+  univar_out: "corr"
+  cat_cols: ["sex","exng","caa","cp","fbs","restecg","slp","thall"]
+  con_cols: ["age","trtbps","chol","thalachh","oldpeak"]
+-architecture:
+  architecture: 'sklearn'
+  GPU: True
+
+
+-architectureList:
+  list: ["Keras", "sklearn", "Pytorch"]

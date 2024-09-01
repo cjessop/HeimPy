@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ML_packaging module &#8212; Heimdall  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css?v=87629129" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RunTest module" href="RunTest.html" />
+    <link rel="prev" title="DataSetSynth module" href="DataSetSynth.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="RunTest.html" title="RunTest module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DataSetSynth.html" title="DataSetSynth module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ML_packaging module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-ML_packaging">
+<span id="ml-packaging-module"></span><h1>ML_packaging module<a class="headerlink" href="#module-ML_packaging" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ML_packaging.</span></span><span class="sig-name descname"><span class="pre">ML_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ffnn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'DecisionTree':</span> <span class="pre">'DT',</span> <span class="pre">'EnsembleClassifier':</span> <span class="pre">'EC',</span> <span class="pre">'KNearestNeighbour':</span> <span class="pre">'kNN',</span> <span class="pre">'LinearRegression':</span> <span class="pre">'LinReg',</span> <span class="pre">'MultiLayerPerceptron':</span> <span class="pre">'MLP',</span> <span class="pre">'NaiveBayes':</span> <span class="pre">'NB',</span> <span class="pre">'NeuralNetwork':</span> <span class="pre">'NN',</span> <span class="pre">'RandomForest':</span> <span class="pre">'RF',</span> <span class="pre">'SupportVector':</span> <span class="pre">'SVM'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'target'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cross_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CNN</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_GPU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YOLO</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YOLO_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_capture</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YOLO_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YOLO_save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A meta class that handles the application of all ML models. 
+The current classical models are:
+- Support Vector Machine
+- Naive Bayes
+- Decision Tree
+- Logistic Regression
+- Multi-Layered Perceptron
+- Random Forest
+- k-Nearest-Neighbour
+- Ensemble Classifier (all models combined)
+- Gradient Boosted Classifier
+- Ada Boosted Classifier</p>
+<p>The current Deep Learning methods are:
+- CNN
+- YOLOv8</p>
+<p>Includes the call to instantiate the ML class and apply test-train split</p>
+<p>Args: 
+data - input dataset in disordered format - Column labelled dataset
+ffnn - whether usage of the feed-forward neural network to make a prediction - True or False
+all - whether or not to apply all classifier models to the singe dataset - True or False
+model - the name of the model to be applied - String
+model_dict - dictionary of all models and their corresponding names
+target - the name of the target feature from input dataset - String
+help - whether or not to print the help message - True or False
+clean - whether or not to delete all saved models - True or False
+search - perform grid search either randomly or evenly spaced on a grid - String of ‘random’ or ‘grid’
+cross_val - perform k-fold cross validation - True or False
+CNN - Apply a convolutional Neural Network - True or False
+on_GPU - Run the CNN on a GPU - True or False
+YOLO - Instantiate an instance of the YOLO class for training or predicition - True or False
+data_path - The path to the dataset - default None
+image_path - The path to the image library - default None
+YOLO_model - The path or name of the trained YOLO algoritm - default None
+video_path - The path to the video on which you would like to predict on - default None
+video_capture - Use a connected image or camera sensor for live input to predict on - True or False
+YOLO_train - Flag to train a new YOLO model on, requires data_path and image_path to be not None - True or False</p>
+<p>Returns:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.apply_CNN">
+<span class="sig-name descname"><span class="pre">apply_CNN</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.apply_CNN" title="Link to this definition">¶</a></dt>
+<dd><p>Applies the Convolutional Neural Network (CNN) architecture defined in BaseMLClasses.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.apply_YOLO">
+<span class="sig-name descname"><span class="pre">apply_YOLO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.apply_YOLO" title="Link to this definition">¶</a></dt>
+<dd><p>Applies or trains a YOLO model on an input video or live capture.</p>
+<p>Args:
+None</p>
+<p>Returns:
+None by default
+If video_capture is True, a window showing the current capture of the connected camera system is displayed with bounding boxes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.apply_all_models">
+<span class="sig-name descname"><span class="pre">apply_all_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.apply_all_models" title="Link to this definition">¶</a></dt>
+<dd><p>Applies multiple machine learning models to the dataset and compares their scores.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>flag (bool, optional): If True, applies the models. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.apply_neural_net">
+<span class="sig-name descname"><span class="pre">apply_neural_net</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.apply_neural_net" title="Link to this definition">¶</a></dt>
+<dd><p>Applies a feedforward neural network (FFNN) to the dataset for predictions.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.apply_single_model">
+<span class="sig-name descname"><span class="pre">apply_single_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.apply_single_model" title="Link to this definition">¶</a></dt>
+<dd><p>Applies a single machine learning model to the dataset.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>cm (bool, optional): If True, plots a confusion matrix. Defaults to False.
+save_model (bool, optional): If True, saves the trained model. Defaults to False.
+save_model_name (str, optional): Name to use for the saved model file. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.call_ML">
+<span class="sig-name descname"><span class="pre">call_ML</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.call_ML" title="Link to this definition">¶</a></dt>
+<dd><p>Instantiates the ML class to apply machine learning algorithms to the dataset.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ML: An instance of the ML class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.misc">
+<span class="sig-name descname"><span class="pre">misc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.misc" title="Link to this definition">¶</a></dt>
+<dd><p>Handles miscellaneous operations such as displaying help information and deleting saved models.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_meta.split_data">
+<span class="sig-name descname"><span class="pre">split_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encode_categorical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'target'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_meta.split_data" title="Link to this definition">¶</a></dt>
+<dd><p>Splits the dataset into features (X) and target (y), with optional encoding of categorical features.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>encode_categorical (bool, optional): If True, encodes categorical features. Defaults to True.
+y (str, optional): Name of the target variable. Defaults to ‘target’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: X and y data after splitting (and encoding if applicable).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ML_packaging.</span></span><span class="sig-name descname"><span class="pre">ML_post_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saved_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">con_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ML_packaging.ML_meta" title="ML_packaging.ML_meta"><code class="xref py py-class docutils literal notranslate"><span class="pre">ML_meta</span></code></a></p>
+<p>A class that handles the post-processing functionality of any saved ML models.</p>
+<p>Args: 
+model - Input model saved as .pkl - Binary Machine Learning Model string name
+data - Input dataframe in the same format as the data used to test to train the model, i.e. the same labelled columns
+predict - Whether or not to predict on input data - Boolean True or False
+target - The name of the target feature - String
+con_cols - The continuous column names - String or list of strings</p>
+<dl class="simple">
+<dt>univariate analysis - method that takes a string to perform exploratory data analysis on an input data set. string inputs include:</dt><dd><ul class="simple">
+<li><p>‘output’ plots the target variable output as a bar graph</p></li>
+<li><p>‘corr’ plots the correlation matrices between features</p></li>
+<li><p>‘pair’ plots the pairwise relationships in the input dataset</p></li>
+<li><p>‘kde’ kernel density estimate plot of a feature against the target - input string is the name of the feature</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.corr_plot">
+<span class="sig-name descname"><span class="pre">corr_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.corr_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the correlation matrix between parameters of the input dataset.</p>
+<p>Args:
+None</p>
+<p>Returns:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.data_info">
+<span class="sig-name descname"><span class="pre">data_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.data_info" title="Link to this definition">¶</a></dt>
+<dd><p>A simple method to output various information on the dataset, such as the shape, values, and unique counts</p>
+<p>Args: 
+None</p>
+<p>Returns:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.get_X_test">
+<span class="sig-name descname"><span class="pre">get_X_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.get_X_test" title="Link to this definition">¶</a></dt>
+<dd><p>Function to get the X_test portion of the dataset from the split. Calls to the split
+data method</p>
+<p>Args:
+None</p>
+<p>Returns:
+pandas.DataFrame: The X_test data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.kde_plot">
+<span class="sig-name descname"><span class="pre">kde_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.kde_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the Kernel Density Estimate (KDE) to visualise the distribution of observations within the dataset.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.linearality">
+<span class="sig-name descname"><span class="pre">linearality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.linearality" title="Link to this definition">¶</a></dt>
+<dd><p>(Unused) Method intended to plot the linearity of features in the dataset.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.load_and_predict">
+<span class="sig-name descname"><span class="pre">load_and_predict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.load_and_predict" title="Link to this definition">¶</a></dt>
+<dd><p>Function to load a saved serialised trained ML/AI model and if required make a prediction on 
+a set of input variables</p>
+<p>(Currently only pickled .pkl formatted networks are permitted)</p>
+<p>Args:
+None</p>
+<p>Returns:
+numpy.ndarray: The prediction results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.pairplot">
+<span class="sig-name descname"><span class="pre">pairplot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.pairplot" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the pairwise relationships between the parameters within the dataset.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.split_data">
+<span class="sig-name descname"><span class="pre">split_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encode_categorical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'target'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.split_data" title="Link to this definition">¶</a></dt>
+<dd><p>Function to call the split data method from BaseMLClasses.py</p>
+<p>Args:
+encode_categorical - method to encode categorical data - Boolean True or False
+target -  string of the name of the target variable in the dataset - String</p>
+<p>Returns:
+X and y data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.target_plot">
+<span class="sig-name descname"><span class="pre">target_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.target_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plots the target variable distribution.</p>
+<p>No arguments.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ML_packaging.ML_post_process.univariate_analysis">
+<span class="sig-name descname"><span class="pre">univariate_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ML_packaging.ML_post_process.univariate_analysis" title="Link to this definition">¶</a></dt>
+<dd><p>Performs univariate analysis for the features within the dataset, calling one of the available methods.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>output_plot (str, optional): Type of analysis to perform. One of: ‘output’, ‘corr’, ‘pair’, ‘kde’, or ‘linearality’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">ML_packaging module</a><ul>
+<li><a class="reference internal" href="#ML_packaging.ML_meta"><code class="docutils literal notranslate"><span class="pre">ML_meta</span></code></a><ul>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.apply_CNN"><code class="docutils literal notranslate"><span class="pre">ML_meta.apply_CNN()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.apply_YOLO"><code class="docutils literal notranslate"><span class="pre">ML_meta.apply_YOLO()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.apply_all_models"><code class="docutils literal notranslate"><span class="pre">ML_meta.apply_all_models()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.apply_neural_net"><code class="docutils literal notranslate"><span class="pre">ML_meta.apply_neural_net()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.apply_single_model"><code class="docutils literal notranslate"><span class="pre">ML_meta.apply_single_model()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.call_ML"><code class="docutils literal notranslate"><span class="pre">ML_meta.call_ML()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.misc"><code class="docutils literal notranslate"><span class="pre">ML_meta.misc()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_meta.split_data"><code class="docutils literal notranslate"><span class="pre">ML_meta.split_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process"><code class="docutils literal notranslate"><span class="pre">ML_post_process</span></code></a><ul>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.corr_plot"><code class="docutils literal notranslate"><span class="pre">ML_post_process.corr_plot()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.data_info"><code class="docutils literal notranslate"><span class="pre">ML_post_process.data_info()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.get_X_test"><code class="docutils literal notranslate"><span class="pre">ML_post_process.get_X_test()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.kde_plot"><code class="docutils literal notranslate"><span class="pre">ML_post_process.kde_plot()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.linearality"><code class="docutils literal notranslate"><span class="pre">ML_post_process.linearality()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.load_and_predict"><code class="docutils literal notranslate"><span class="pre">ML_post_process.load_and_predict()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.pairplot"><code class="docutils literal notranslate"><span class="pre">ML_post_process.pairplot()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.split_data"><code class="docutils literal notranslate"><span class="pre">ML_post_process.split_data()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.target_plot"><code class="docutils literal notranslate"><span class="pre">ML_post_process.target_plot()</span></code></a></li>
+<li><a class="reference internal" href="#ML_packaging.ML_post_process.univariate_analysis"><code class="docutils literal notranslate"><span class="pre">ML_post_process.univariate_analysis()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="DataSetSynth.html"
+                          title="previous chapter">DataSetSynth module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="RunTest.html"
+                          title="next chapter">RunTest module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ML_packaging.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="RunTest.html" title="RunTest module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DataSetSynth.html" title="DataSetSynth module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ML_packaging module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Chris Jessop.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    </div>
+  </body>
+</html>

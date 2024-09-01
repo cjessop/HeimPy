@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BaseMLClasses module &#8212; Heimdall  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css?v=87629129" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CNN_file module" href="CNN_file.html" />
+    <link rel="prev" title="src" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="CNN_file.html" title="CNN_file module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BaseMLClasses module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-BaseMLClasses">
+<span id="basemlclasses-module"></span><h1>BaseMLClasses module<a class="headerlink" href="#module-BaseMLClasses" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">BasePredictor</span></span><a class="headerlink" href="#BaseMLClasses.BasePredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for predictive models.</p>
+<p>Defines the core functionalities expected from predictive models, such as fitting and predicting.
+Also provides utility methods for parameter management and model resetting/loading.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>_get_param_names (classmethod): Retrieves the names of parameters for the class’s constructor.
+get_params (method): Returns a dictionary of the class’s hyperparameters.
+reset (method): Creates a new instance of the class with the same parameters as the current instance.
+load_params (method): Loads new parameters into the class instance.</p>
+</dd>
+<dt>Abstract Methods:</dt><dd><p>fit (abstractmethod): Trains the model on given data.
+predict (abstractmethod): Makes predictions on new data using the trained model.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor.fit">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.BasePredictor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the model on the given data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.</p>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>NotImplementedError: This is an abstract method and should be</dt><dd><p>implemented in the derived class.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.BasePredictor.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of the class’s hyperparameters.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>deep (bool, optional): If True, includes parameters for sub-objects that have a get_params() method. Defaults to True.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: A dictionary of parameter names mapped to their values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor.load_params">
+<span class="sig-name descname"><span class="pre">load_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.BasePredictor.load_params" title="Link to this definition">¶</a></dt>
+<dd><p>Loads new parameters into the class instance.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>params (dict, optional): Dictionary of new parameters. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>BasePredictor: Updated instance of the class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor.predict">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.BasePredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Makes predictions on new data using the trained model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Predicted values.</p>
+</dd>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>NotImplementedError: This is an abstract method and should be</dt><dd><p>implemented in the derived class.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.BasePredictor.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.BasePredictor.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the model to its initial state.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>BasePredictor: A new instance of the class with the same parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMLClasses.ML">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">ML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BaseMLClasses.BasePredictor" title="BaseMLClasses.BasePredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePredictor</span></code></a></p>
+<p>Class containing various methods to format data and apply machine learning algorithms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.abc">
+<span class="sig-name descname"><span class="pre">abc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.abc" title="Link to this definition">¶</a></dt>
+<dd><p>Trains an AdaBoost classifier.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>AdaBoostClassifier: Trained AdaBoost classifier model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.compare_classifier_reports">
+<span class="sig-name descname"><span class="pre">compare_classifier_reports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.compare_classifier_reports" title="Link to this definition">¶</a></dt>
+<dd><p>Compares classification reports for multiple models.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>models (list): List of trained models.
+X_test (pandas.DataFrame): Test features.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.cross_validation">
+<span class="sig-name descname"><span class="pre">cross_validation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.cross_validation" title="Link to this definition">¶</a></dt>
+<dd><p>Applies K-fold cross-validation to a selected model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The machine learning model to apply K-fold CV to.
+X: The feature data.
+y: The target variable.
+cv: Number of folds in a stratified KFold.</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: Scores from K-fold cross-validation for the selected model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.dt" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a decision tree classifier.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.
+max_depth (int, optional): Maximum depth of the tree. Defaults to 8.</p>
+</dd>
+<dt>Returns:</dt><dd><p>DecisionTreeClassifier: Trained decision tree model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.ec">
+<span class="sig-name descname"><span class="pre">ec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.ec" title="Link to this definition">¶</a></dt>
+<dd><p>Trains an ensemble classifier using voting.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.
+voting: Voting method for final classification (hard or soft voting).</p>
+</dd>
+<dt>Returns:</dt><dd><p>VotingClassifier: Trained ensemble classifier model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.encode_categorical">
+<span class="sig-name descname"><span class="pre">encode_categorical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.encode_categorical" title="Link to this definition">¶</a></dt>
+<dd><p>Encodes categorical features in the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X, y) with encoded categorical features.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.extract_features">
+<span class="sig-name descname"><span class="pre">extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.extract_features" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts features from classification data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.
+test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X_train, X_test, y_train, y_test)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.find_best_model">
+<span class="sig-name descname"><span class="pre">find_best_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.find_best_model" title="Link to this definition">¶</a></dt>
+<dd><p>Identifies the best model based on accuracy.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>models (list): List of trained models.
+X_test (pandas.DataFrame): Test features.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: The best model and its accuracy.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Placeholder for model training method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.gbc">
+<span class="sig-name descname"><span class="pre">gbc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.gbc" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a gradient boosted classifier.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.
+random_state (int, optional): Random state for reproducibility. Defaults to 1.</p>
+</dd>
+<dt>Returns:</dt><dd><p>GradientBoostingClassifier: Trained gradient boosted classifier model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.grid_search">
+<span class="sig-name descname"><span class="pre">grid_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.grid_search" title="Link to this definition">¶</a></dt>
+<dd><p>Performs grid search to find the best hyperparameters.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The machine learning model to tune.
+param_grid (dict): The parameter grid to search over.
+X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.
+cv (int, optional): Number of cross-validation folds. Defaults to 10.</p>
+</dd>
+<dt>Returns:</dt><dd><p>GridSearchCV: The fitted grid search object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.knn">
+<span class="sig-name descname"><span class="pre">knn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.knn" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a k-nearest neighbours (KNN) model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+y_train (pandas.Series): Training target variable.
+X_test  (pandas.DataFrame): Testing features.
+y_test  (pandas.Series): Testing target variable.
+n_neighbors (int, optional): Number of neighbours to consider. Defaults to 5.</p>
+</dd>
+<dt>Returns:</dt><dd><p>KNNModel: Trained KNN model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.lr">
+<span class="sig-name descname"><span class="pre">lr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.lr" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a logistic regression model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+y_train (pandas.Series): Training target variable.
+X_test  (pandas.DataFrame): Testing features.
+y_test  (pandas.Series): Testing target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>LogisticRegressionModel: Trained logistic regression model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.missing_data">
+<span class="sig-name descname"><span class="pre">missing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.missing_data" title="Link to this definition">¶</a></dt>
+<dd><p>Handles missing data in the dataset.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.
+strategy (str, optional): Imputation strategy for missing values. Defaults to ‘mean’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X, y) with imputed missing values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.mlp">
+<span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neurons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary_crossentropy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['accuracy']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.mlp" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a Multi-Layer Perceptron (MLP) model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+y_train (pandas.Series): Training target variable.
+X_test (pandas.DataFrame): Testing features.
+y_test (pandas.Series): Testing target variable.
+hidden_layers (int, optional): Number of hidden layers. Defaults to 1.
+neurons (int, optional): Number of neurons per hidden layer. Defaults to 8.
+activation (str, optional): Activation function for hidden layers. Defaults to ‘relu’.
+optimizer (str, optional): Optimiser to use. Defaults to ‘adam’.
+loss (str, optional): Loss function. Defaults to ‘binary_crossentropy’.
+metrics (list, optional): List of metrics to evaluate. Defaults to [‘accuracy’].
+epochs (int, optional): Number of training epochs. Defaults to 25.
+batch_size (int, optional): Batch size for training. Defaults to 32.
+validation_split (float, optional): Proportion of training data to use as validation set. Defaults to 0.2.
+verbose (int, optional): Verbosity mode. Defaults to 1.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Sequential: Trained MLP model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.model_score">
+<span class="sig-name descname"><span class="pre">model_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.model_score" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluates the model using repeated stratified K-fold cross-validation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The trained machine learning model.
+X_test (pandas.DataFrame): Test features.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: Cross-validation scores.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.nb">
+<span class="sig-name descname"><span class="pre">nb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.nb" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a naive bayes classifier.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>MultinomialNB: Trained naive bayes model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.plot_confusion_matrix">
+<span class="sig-name descname"><span class="pre">plot_confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.plot_confusion_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Plots a confusion matrix for the given model’s predictions.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The trained machine learning model.
+X_test (pandas.DataFrame): Test features.
+y_test (pandas.Series): Test target variable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>ConfusionMatrix: A seaborn heatmap of the confusion matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Makes predictions using the given model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The trained machine learning model.
+X (pandas.DataFrame): Input features.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Predicted values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.prepare_data">
+<span class="sig-name descname"><span class="pre">prepare_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.prepare_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares data for modelling.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the dataset file.
+label (str): Name of the target variable column.
+columns (list): List of columns to drop.
+end_range (int): End range for iterating over the dataset.
+index_column (bool, optional): Whether to use the first column as an index. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.randomised_search">
+<span class="sig-name descname"><span class="pre">randomised_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.randomised_search" title="Link to this definition">¶</a></dt>
+<dd><p>Performs randomised search to find the best hyperparameters.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>model: The machine learning model to tune.
+X (pandas.DataFrame): Feature data.
+y (pandas.Series): Target variable.
+cv (int, optional): Number of cross-validation folds. Defaults to 5.
+n_iter (int, optional): Number of parameter settings sampled. Defaults to 100.
+param_grid (dict, optional): The parameter grid to search over. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>RandomizedSearchCV: The fitted randomised search object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.rf">
+<span class="sig-name descname"><span class="pre">rf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_estimators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.rf" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a random forest classifier.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.
+y_train (pandas.Series): Training target variable.
+y_test (pandas.Series): Test target variable.
+n_estimators (int, optional): Number of trees in the forest. Defaults to 100.
+max_depth (int, optional): Maximum depth of the trees. Defaults to 8.</p>
+</dd>
+<dt>Returns:</dt><dd><p>RandomForestClassifier: Trained random forest model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.scale_data">
+<span class="sig-name descname"><span class="pre">scale_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.scale_data" title="Link to this definition">¶</a></dt>
+<dd><p>Scales the data using standardisation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+X_test (pandas.DataFrame): Test features.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X_train, X_test) with scaled features.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.split_X_y">
+<span class="sig-name descname"><span class="pre">split_X_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.split_X_y" title="Link to this definition">¶</a></dt>
+<dd><p>Splits the data into features (X) and target variable (y).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y (str): Name of the target variable column.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X, y) where X is the feature matrix and y is the target vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.split_data">
+<span class="sig-name descname"><span class="pre">split_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.split_data" title="Link to this definition">¶</a></dt>
+<dd><p>Splits data into training and testing sets.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.
+test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: (X_train, X_test, y_train, y_test)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ML.svm">
+<span class="sig-name descname"><span class="pre">svm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rbf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ML.svm" title="Link to this definition">¶</a></dt>
+<dd><p>Trains a Support Vector Machine (SVM) model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+y_train (pandas.Series): Training target variable.
+X_test  (pandas.DataFrame): Testing features.
+y_test  (pandas.Series): Testing target variable.
+kernel  (str, optional): Desired SVM kernel. Defaults to ‘rbf’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>svc_model: Trained SVM model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">PipelineLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SafeLoader</span></code></p>
+<p>A custom YAML loader for pipeline configurations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader.construct_call">
+<span class="sig-name descname"><span class="pre">construct_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader.construct_call" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a callable object from a YAML node.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): The name of the object to call.
+node (yaml.Node): The YAML node containing arguments for the call.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Call: A Call object representing the function call.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader.construct_map">
+<span class="sig-name descname"><span class="pre">construct_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader.construct_map" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a mapping (dictionary) from a YAML node.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node (yaml.Node): The YAML node to construct the mapping from.
+deep (bool, optional): Whether to deeply construct the mapping. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: The constructed mapping.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader.construct_ref">
+<span class="sig-name descname"><span class="pre">construct_ref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader.construct_ref" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a reference from a YAML node.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node (yaml.Node): The YAML node containing the reference.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Ref: A Ref object constructed from the reference.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader.load" title="Link to this definition">¶</a></dt>
+<dd><p>Loads a YAML stream and returns the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>instream (file-like object): The input stream to read from.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: The parsed YAML data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.PipelineLoader.load_pipeline_yaml">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pipeline_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.PipelineLoader.load_pipeline_yaml" title="Link to this definition">¶</a></dt>
+<dd><p>Loads a pipeline configuration from a YAML file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): The path to the YAML file.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: The loaded pipeline configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMLClasses.ffnn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">ffnn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ffnn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BaseMLClasses.BasePredictor" title="BaseMLClasses.BasePredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePredictor</span></code></a></p>
+<p>Class for creating and running a Feedforward Neural Network (FFNN).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ffnn.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ffnn.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Trains the feedforward neural network.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.
+y (pandas.Series): Target variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.ffnn.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.ffnn.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Makes predictions using the trained feedforward neural network.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X (pandas.DataFrame): Input features.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: Predicted values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="BaseMLClasses.import_function">
+<span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">import_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qualified_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.import_function" title="Link to this definition">¶</a></dt>
+<dd><p>Imports a callable object (function, class, etc.) based on its qualified name.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>qualified_name (str): The fully qualified name of the callable.</p>
+</dd>
+<dt>Returns:</dt><dd><p>callable: The imported callable object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMLClasses.svm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BaseMLClasses.</span></span><span class="sig-name descname"><span class="pre">svm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.svm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BaseMLClasses.ML" title="BaseMLClasses.ML"><code class="xref py py-class docutils literal notranslate"><span class="pre">ML</span></code></a></p>
+<p>A class for running Support Vector Machine (SVM) models.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseMLClasses.svm.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rbf'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaseMLClasses.svm.run" title="Link to this definition">¶</a></dt>
+<dd><p>Trains and runs an SVM model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>X_train (pandas.DataFrame): Training features.
+y_train (pandas.Series): Training target variable.
+X_test (pandas.DataFrame): Test features.
+y_test (pandas.Series): Test target variable.
+kernel (str, optional): Kernel type for SVM. Defaults to ‘rbf’.</p>
+</dd>
+<dt>Returns:</dt><dd><p>SVC: Trained SVM model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">BaseMLClasses module</a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor"><code class="docutils literal notranslate"><span class="pre">BasePredictor</span></code></a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor.fit"><code class="docutils literal notranslate"><span class="pre">BasePredictor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor.get_params"><code class="docutils literal notranslate"><span class="pre">BasePredictor.get_params()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor.load_params"><code class="docutils literal notranslate"><span class="pre">BasePredictor.load_params()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor.predict"><code class="docutils literal notranslate"><span class="pre">BasePredictor.predict()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.BasePredictor.reset"><code class="docutils literal notranslate"><span class="pre">BasePredictor.reset()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#BaseMLClasses.ML"><code class="docutils literal notranslate"><span class="pre">ML</span></code></a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.ML.abc"><code class="docutils literal notranslate"><span class="pre">ML.abc()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.compare_classifier_reports"><code class="docutils literal notranslate"><span class="pre">ML.compare_classifier_reports()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.cross_validation"><code class="docutils literal notranslate"><span class="pre">ML.cross_validation()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.dt"><code class="docutils literal notranslate"><span class="pre">ML.dt()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.ec"><code class="docutils literal notranslate"><span class="pre">ML.ec()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.encode_categorical"><code class="docutils literal notranslate"><span class="pre">ML.encode_categorical()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.extract_features"><code class="docutils literal notranslate"><span class="pre">ML.extract_features()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.find_best_model"><code class="docutils literal notranslate"><span class="pre">ML.find_best_model()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.fit"><code class="docutils literal notranslate"><span class="pre">ML.fit()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.gbc"><code class="docutils literal notranslate"><span class="pre">ML.gbc()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.grid_search"><code class="docutils literal notranslate"><span class="pre">ML.grid_search()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.knn"><code class="docutils literal notranslate"><span class="pre">ML.knn()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.lr"><code class="docutils literal notranslate"><span class="pre">ML.lr()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.missing_data"><code class="docutils literal notranslate"><span class="pre">ML.missing_data()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.mlp"><code class="docutils literal notranslate"><span class="pre">ML.mlp()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.model_score"><code class="docutils literal notranslate"><span class="pre">ML.model_score()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.nb"><code class="docutils literal notranslate"><span class="pre">ML.nb()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.plot_confusion_matrix"><code class="docutils literal notranslate"><span class="pre">ML.plot_confusion_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.predict"><code class="docutils literal notranslate"><span class="pre">ML.predict()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.prepare_data"><code class="docutils literal notranslate"><span class="pre">ML.prepare_data()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.randomised_search"><code class="docutils literal notranslate"><span class="pre">ML.randomised_search()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.rf"><code class="docutils literal notranslate"><span class="pre">ML.rf()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.scale_data"><code class="docutils literal notranslate"><span class="pre">ML.scale_data()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.split_X_y"><code class="docutils literal notranslate"><span class="pre">ML.split_X_y()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.split_data"><code class="docutils literal notranslate"><span class="pre">ML.split_data()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ML.svm"><code class="docutils literal notranslate"><span class="pre">ML.svm()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader"><code class="docutils literal notranslate"><span class="pre">PipelineLoader</span></code></a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader.construct_call"><code class="docutils literal notranslate"><span class="pre">PipelineLoader.construct_call()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader.construct_map"><code class="docutils literal notranslate"><span class="pre">PipelineLoader.construct_map()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader.construct_ref"><code class="docutils literal notranslate"><span class="pre">PipelineLoader.construct_ref()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader.load"><code class="docutils literal notranslate"><span class="pre">PipelineLoader.load()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.PipelineLoader.load_pipeline_yaml"><code class="docutils literal notranslate"><span class="pre">PipelineLoader.load_pipeline_yaml()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#BaseMLClasses.ffnn"><code class="docutils literal notranslate"><span class="pre">ffnn</span></code></a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.ffnn.fit"><code class="docutils literal notranslate"><span class="pre">ffnn.fit()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.ffnn.predict"><code class="docutils literal notranslate"><span class="pre">ffnn.predict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#BaseMLClasses.import_function"><code class="docutils literal notranslate"><span class="pre">import_function()</span></code></a></li>
+<li><a class="reference internal" href="#BaseMLClasses.svm"><code class="docutils literal notranslate"><span class="pre">svm</span></code></a><ul>
+<li><a class="reference internal" href="#BaseMLClasses.svm.run"><code class="docutils literal notranslate"><span class="pre">svm.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="modules.html"
+                          title="previous chapter">src</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="CNN_file.html"
+                          title="next chapter">CNN_file module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/BaseMLClasses.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="CNN_file.html" title="CNN_file module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Heimdall  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">BaseMLClasses module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Chris Jessop.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    </div>
+  </body>
+</html>

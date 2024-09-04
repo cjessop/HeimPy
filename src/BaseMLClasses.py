@@ -21,6 +21,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import cross_val_score, RepeatedStratifiedKFold
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
+from sklearn.impute import SimpleImputer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import mean_squared_error
@@ -30,23 +31,23 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 
-# try:
-#     import tensorflow as tf
-#     from keras import layers
-#     from keras.models import Sequential
-#     from keras.layers import Input
-#     from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten
-#     from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
-#     from keras.layers import RandomFlip, RandomCrop
-#     from keras.utils import image_dataset_from_directory    
-#     from keras.callbacks import EarlyStopping
-#     from keras.models import load_model
-#     from keras.optimizers import Adam
-#     from keras.applications import mobilenet_v2
-#     from keras.applications import MobileNetV2
-# except ImportError:
-#     print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
-#     pass
+try:
+    import tensorflow as tf
+    from keras import layers
+    from keras.models import Sequential
+    from keras.layers import Input
+    from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten
+    from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
+    from keras.layers import RandomFlip, RandomCrop
+    from keras.utils import image_dataset_from_directory    
+    from keras.callbacks import EarlyStopping
+    from keras.models import load_model
+    from keras.optimizers import Adam
+    from keras.applications import mobilenet_v2
+    from keras.applications import MobileNetV2
+except ImportError:
+    print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
+    pass
 
 from abc import ABC, abstractmethod
 import inspect
@@ -365,10 +366,18 @@ class ML(BasePredictor):
         Returns:
             tuple: (X, y) with imputed missing values.
         """
-        from sklearn.impute import SimpleImputer
         imputer = SimpleImputer(missing_values=np.nan, strategy=strategy)
-        X = imputer.fit_transform(X)
-        y = imputer.fit_transform(y)
+        
+        X_cols_with_nan = X.columns[X.isna().any()].tolist() # Identify columns with missing values in X
+        
+        if X_cols_with_nan:
+            X[X_cols_with_nan] = imputer.fit_transform(X[X_cols_with_nan])
+        
+        if isinstance(y, pd.Series) and y.isna().any(): # Check if y has missing values
+            y = pd.Series(imputer.fit_transform(y.values.reshape(-1, 1)).flatten(), index=y.index)
+        elif isinstance(y, np.ndarray) and np.isnan(y).any():
+            y = imputer.fit_transform(y.reshape(-1, 1)).flatten()
+        
         return X, y
 
     def extract_features(self, X, y, test_size=0.2):

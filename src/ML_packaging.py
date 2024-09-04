@@ -5,11 +5,11 @@ from BaseMLClasses import ML
 from BaseMLClasses import ffnn
 from CNN_file import CNN
 
-# try:
-#     import tensorflow as tf
-#     import keras
-# except ImportError:
-#     print("Unable to import Tensorflow/Keras inside of the ML packaging script")
+try:
+    import tensorflow as tf
+    import keras
+except ImportError:
+    print("Unable to import Tensorflow/Keras inside of the ML packaging script")
     
 
 #from configuration.Config import config

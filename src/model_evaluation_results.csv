@@ -1,0 +1,5 @@
+Model & Dataset,Accuracy (%)
+KNN Autism-Adult-Data.arff,97.87234042553192
+KNN breast-cancer-wisconsin.csv,60.71428571428571
+KNN heart.csv,68.85245901639344
+KNN titanic.csv,65.92178770949721

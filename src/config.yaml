@@ -1,0 +1,12 @@
+  datasets_dir: "../datasets/"
+  
+  model_options:
+    - SVM
+    - KNN
+    - LR
+    - RF
+    - DT
+    - NB
+    - GBC
+    - ABC
+    - EC

@@ -30,23 +30,23 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 
-try:
-    import tensorflow as tf
-    from keras import layers
-    from keras.models import Sequential
-    from keras.layers import Input
-    from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten
-    from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
-    from keras.layers import RandomFlip, RandomCrop
-    from keras.utils import image_dataset_from_directory    
-    from keras.callbacks import EarlyStopping
-    from keras.models import load_model
-    from keras.optimizers import Adam
-    from keras.applications import mobilenet_v2
-    from keras.applications import MobileNetV2
-except ImportError:
-    print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
-    exit(0)
+# try:
+#     import tensorflow as tf
+#     from keras import layers
+#     from keras.models import Sequential
+#     from keras.layers import Input
+#     from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten
+#     from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
+#     from keras.layers import RandomFlip, RandomCrop
+#     from keras.utils import image_dataset_from_directory    
+#     from keras.callbacks import EarlyStopping
+#     from keras.models import load_model
+#     from keras.optimizers import Adam
+#     from keras.applications import mobilenet_v2
+#     from keras.applications import MobileNetV2
+# except ImportError:
+#     print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
+#     pass
 
 from abc import ABC, abstractmethod
 import inspect
@@ -456,8 +456,9 @@ class ML(BasePredictor):
         logmodel = LogisticRegression()
         logmodel.fit(X_train, y_train)
         predictions = logmodel.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return logmodel
+        return logmodel, accuracy
     
     def knn(self, X_train, X_test, y_train, y_test, n_neighbors=5):
         """
@@ -476,8 +477,9 @@ class ML(BasePredictor):
         knn = KNeighborsClassifier(n_neighbors=n_neighbors)
         knn.fit(X_train, y_train)
         pred = knn.predict(X_test)
+        accuracy = accuracy_score(y_test, pred)
         #print(classification_report(y_test, pred))
-        return knn
+        return knn, accuracy
 
     def svm(self, X_train, X_test, y_train, y_test, kernel='rbf'):
         """
@@ -496,8 +498,9 @@ class ML(BasePredictor):
         svc_model = SVC(kernel=kernel)
         svc_model.fit(X_train, y_train)
         predictions = svc_model.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return svc_model
+        return svc_model, accuracy
     
     def dt(self, X_train, X_test, y_train, y_test, max_depth=8):
         """
@@ -516,8 +519,9 @@ class ML(BasePredictor):
         dtree = DecisionTreeClassifier(max_depth=max_depth)
         dtree.fit(X_train, y_train)
         predictions = dtree.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return dtree
+        return dtree, accuracy
     
     def rf(self, X_train, X_test, y_train, y_test, n_estimators=100, max_depth=8):
         """
@@ -537,8 +541,9 @@ class ML(BasePredictor):
         rfc = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
         rfc.fit(X_train, y_train)
         predictions = rfc.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return rfc
+        return rfc, accuracy
     
     def nb(self, X_train, X_test, y_train, y_test):
         """
@@ -556,8 +561,9 @@ class ML(BasePredictor):
         nb = MultinomialNB()
         nb.fit(X_train, y_train)
         predictions = nb.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return nb
+        return nb, accuracy
 
     def gbc(self, X_train, X_test, y_train, y_test, random_state=1):
         """
@@ -576,8 +582,9 @@ class ML(BasePredictor):
         gbc = GradientBoostingClassifier(random_state=random_state)
         gbc.fit(X_train, y_train)
         predictions = gbc.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return gbc
+        return gbc, accuracy
 
     def abc(self, X_train, X_test, y_train, y_test):
         """
@@ -595,8 +602,9 @@ class ML(BasePredictor):
         abc = AdaBoostClassifier()
         abc.fit(X_train, y_train)
         predictions = abc.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return abc
+        return abc, accuracy
     
     def ec(self, X_train, X_test, y_train, y_test, voting='hard', random_state=1):
         """
@@ -624,8 +632,9 @@ class ML(BasePredictor):
         eclf = VotingClassifier(estimators=estimators, voting=voting)
         eclf.fit(X_train, y_train)
         predictions = eclf.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return eclf
+        return eclf, accuracy
     
     def cross_validation(self, model, X, y, cv=5):
         """

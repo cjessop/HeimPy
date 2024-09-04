@@ -5,12 +5,12 @@ from BaseMLClasses import ML
 from BaseMLClasses import ffnn
 from CNN_file import CNN
 
-try:
-    import tensorflow as tf
-    import keras
-except ImportError:
-    print("Unable to import Tensorflow/Keras inside of the ML packaging script")
-    exit(0)
+# try:
+#     import tensorflow as tf
+#     import keras
+# except ImportError:
+#     print("Unable to import Tensorflow/Keras inside of the ML packaging script")
+    
 
 #from configuration.Config import config
 import pickle
@@ -159,7 +159,7 @@ class ML_meta:
         return ml
 
     #  Splits data into features (X) and target (y), with optional encoding of categorical features
-    def split_data(self, encode_categorical=True, y='target'):
+    def split_data(self, encode_categorical=True, y='target', bool_missing_data=False):
         """
         Splits the dataset into features (X) and target (y), with optional encoding of categorical features.
 
@@ -174,6 +174,8 @@ class ML_meta:
         X, y = ml.split_X_y(self.target)
         if encode_categorical is True:
             X, y = ml.encode_categorical(X, y)
+        #if bool_missing_data:
+        X, y = ml.missing_data(X, y)
 
         return X, y
 
@@ -227,7 +229,6 @@ class ML_meta:
                     score_df["model VotingClassifier"] = score
                 else:
                     score_df["model " + str(model)] = score
-                print(score_df["model " + str(model)])
                 scores.append(score)
                 scores.append(str(model))
 
@@ -240,6 +241,141 @@ class ML_meta:
             #         print(RF_score)
 
         return score_df, rf, svm, knn, lr, nb, dt, ec, gbc, abc
+    
+    # Applies a specified single model
+    def apply_single_model(self, cm=False, save_model=False, save_model_name=False, data=None, target=None):
+        """
+        Applies a single machine learning model to the dataset.
+
+        Args:
+            cm (bool, optional): If True, plots a confusion matrix. Defaults to False.
+            save_model (bool, optional): If True, saves the trained model. Defaults to False.
+            save_model_name (str, optional): Name to use for the saved model file. Defaults to False.
+
+        Returns:
+            Model object
+            Accuracy parameter
+        """
+        if (self.test == False):
+            # Split data into features (X) and target (y) without categorical encoding
+            X, y = self.split_data(encode_categorical=True)
+            X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y)
+        else:
+            X, y = data, target
+            X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y)
+        #  Define a dictionary mapping full model names to their abbreviated names
+        self.model_dict = {
+                                        "SupportVector": "SVM",
+                                        "KNearestNeighbour": "kNN",
+                                        "LinearRegression": "LinReg",
+                                        "NaiveBayes": "NB",
+                                        "MultiLayerPerceptron": "MLP",
+                                        "DecisionTree": "DT",
+                                        "RandomForest": "RF",
+                                        "NeuralNetwork": "NN",
+                                        "EnsembleClassifier": "EC",
+                                        "GradientBoosted" : "GBC",
+                                        "AdaBooster": "ABC"
+                                    }
+
+        model_list = []
+        model_list.append(self.model)
+        if self.model is not False:
+            ml_single_model = ML(self.data)
+            self.model_dict = {
+                                        "SVM": ml_single_model.svm,
+                                        "KNN": ml_single_model.knn,
+                                        "LR": ml_single_model.lr,
+                                        "NB": ml_single_model.nb,
+                                        "MLP": ml_single_model.mlp,
+                                        "DT": ml_single_model.dt,
+                                        "RF": ml_single_model.rf,
+                                        #"NN": ml_single_model.nn,
+                                        "EC": ml_single_model.ec,
+                                        "GBC": ml_single_model.gbc,
+                                        "ABC": ml_single_model.abc
+                                    }
+            model = None
+            accuracy = None
+
+            if self.model in self.model_dict.keys():
+                print("Selected single model is " + str(self.model_dict[self.model]))
+                model, accuracy = self.model_dict[self.model](X_train, X_test, y_train, y_test)
+                # Perform hyperparameter tuning if requested
+                if self.search is not None:
+                    if self.model == "SVM":
+                        param_grid = {  
+                                        'C': [0.1, 1, 10, 100, 1000], 
+                                        'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
+                                        'kernel': ['rbf']
+                                        }
+                        
+                    elif self.model == "KNN":
+                        param_grid = { 
+                                        'n_neighbors' : [5, 7, 9, 11, 13, 15],
+                                        'weights' : ['uniform', 'distance'],
+                                        'metric' : ['minkowski', 'euclidean', 'manhattan']
+                                        }
+
+                    elif self.model == "NB":
+                        param_grid = { 'var_smoothin' : np.logspace(0, 9, num=100)}
+
+                    elif self.model == "RF":
+                        param_grid = { 
+                                        'n_estimators': [25, 50, 100, 150, 200],
+                                        'max_features': ['auto', 'sqrt', 'log2', None],
+                                        'max_depth': [3, 5, 7, 9, 11] 
+                                        }
+
+                    elif self.model == "DT":
+                        param_grid = { 
+                                        'max_features': ['auto', 'sqrt'],
+                                        'max_depth': 8 
+                                        }
+
+                    elif self.model == "LR":
+                        param_grid = { 'solver' : ['lbfgs', 'sag', 'saga', 'newton-cg'] }
+
+                    elif self.model == "GBC":
+                        param_grid = { 
+                                        'n_estimators': [25, 50, 100, 150, 200],
+                                        'max_features': ['auto', 'sqrt', 'log2', None],
+                                        'max_depth': [3, 5, 7, 9, 11] 
+                                        }
+
+                    elif self.model == "ABC":
+                        param_grid = { 
+                                        'n_estimators': [25, 50, 100, 150, 200, 500],
+                                        'algorithm': ['SAMME', 'SAMME.R', None],
+                                        'learning_rate': [3, 5, 7, 9, 11], 
+                                        }
+                                        #'max_depth': [1, 3, 5, 7, 9, 11] }
+
+                    else:
+                        print(f"Model '{self.model}' not found in model dictionary. Available models: {list(self.model_dict.keys())}")
+                        pass
+
+                if self.search == "random":
+                    ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid)
+                elif self.search == "grid":
+                    ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10)
+                    
+
+                elif self.cross_val is not False:
+                    ml_single_model.cross_validation(model, X_train, y_train)  
+                # else:
+                #     model = self.model_dict[self.model](X_train, X_test, y_train, y_test)
+                 # Save the trained model if requested
+                if save_model is True:
+                    pickle.dump(model, open(save_model_name, 'wb'))
+                # Plot the confusion matrix if requested
+                if cm is True:
+                    ML.plot_confusion_matrix(self, model, X_test, y_test)
+
+                
+                        
+        self.misc()
+        return model, accuracy
 
     # Applies a feedforward neural network model (FFNN)
     def apply_neural_net(self):
@@ -332,135 +468,6 @@ class ML_meta:
             np.savez(save_path+config_.NAME+'_log', tLoss=train_loss, vLoss=val_loss, tTrain=tTrain)
         else:
             print("No available GPUs for training. Please check your configuration")
-
-
-    # Applies a specified single model
-    def apply_single_model(self, cm=False, save_model=False, save_model_name=False, data=None, target=None):
-        """
-        Applies a single machine learning model to the dataset.
-
-        Args:
-            cm (bool, optional): If True, plots a confusion matrix. Defaults to False.
-            save_model (bool, optional): If True, saves the trained model. Defaults to False.
-            save_model_name (str, optional): Name to use for the saved model file. Defaults to False.
-        """
-        if (self.test == False):
-            # Split data into features (X) and target (y) without categorical encoding
-            X, y = self.split_data(encode_categorical=False)
-            X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y)
-        else:
-            X, y = data, target
-            X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y)
-        #  Define a dictionary mapping full model names to their abbreviated names
-        self.model_dict = {
-                                        "SupportVector": "SVM",
-                                        "KNearestNeighbour": "kNN",
-                                        "LinearRegression": "LinReg",
-                                        "NaiveBayes": "NB",
-                                        "MultiLayerPerceptron": "MLP",
-                                        "DecisionTree": "DT",
-                                        "RandomForest": "RF",
-                                        "NeuralNetwork": "NN",
-                                        "EnsembleClassifier": "EC",
-                                        "GradientBoosted" : "GBC",
-                                        "AdaBooster": "ABC"
-                                    }
-
-        model_list = []
-        model_list.append(self.model)
-        if self.model is not False:
-            ml_single_model = ML(self.data)
-            self.model_dict = {
-                                        "SVM": ml_single_model.svm,
-                                        "KNN": ml_single_model.knn,
-                                        "LR": ml_single_model.lr,
-                                        "NB": ml_single_model.nb,
-                                        "MLP": ml_single_model.mlp,
-                                        "DT": ml_single_model.dt,
-                                        "RF": ml_single_model.rf,
-                                        #"NN": ml_single_model.nn,
-                                        "EC": ml_single_model.ec,
-                                        "GBC": ml_single_model.gbc,
-                                        "ABC": ml_single_model.abc
-                                    }
-            if self.model in self.model_dict.keys():
-                print("Selected single model is " + str(self.model_dict[self.model]))
-                model = self.model_dict[self.model](X_train, X_test, y_train, y_test)
-                # Perform hyperparameter tuning if requested
-                if self.search is not None:
-                    if self.model == "SVM":
-                        param_grid = {  
-                                        'C': [0.1, 1, 10, 100, 1000], 
-                                        'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
-                                        'kernel': ['rbf']
-                                        }
-                        
-                    elif self.model == "KNN":
-                        param_grid = { 
-                                        'n_neighbors' : [5, 7, 9, 11, 13, 15],
-                                        'weights' : ['uniform', 'distance'],
-                                        'metric' : ['minkowski', 'euclidean', 'manhattan']
-                                        }
-
-                    elif self.model == "NB":
-                        param_grid = { 'var_smoothin' : np.logspace(0, 9, num=100)}
-
-                    elif self.model == "RF":
-                        param_grid = { 
-                                        'n_estimators': [25, 50, 100, 150, 200],
-                                        'max_features': ['auto', 'sqrt', 'log2', None],
-                                        'max_depth': [3, 5, 7, 9, 11] 
-                                        }
-
-                    elif self.model == "DT":
-                        param_grid = { 
-                                        'max_features': ['auto', 'sqrt'],
-                                        'max_depth': 8 
-                                        }
-
-                    elif self.model == "LR":
-                        param_grid = { 'solver' : ['lbfgs', 'sag', 'saga', 'newton-cg'] }
-
-                    elif self.model == "GBC":
-                        param_grid = { 
-                                        'n_estimators': [25, 50, 100, 150, 200],
-                                        'max_features': ['auto', 'sqrt', 'log2', None],
-                                        'max_depth': [3, 5, 7, 9, 11] 
-                                        }
-
-                    elif self.model == "ABC":
-                        param_grid = { 
-                                        'n_estimators': [25, 50, 100, 150, 200, 500],
-                                        'algorithm': ['SAMME', 'SAMME.R', None],
-                                        'learning_rate': [3, 5, 7, 9, 11], 
-                                        }
-                                        #'max_depth': [1, 3, 5, 7, 9, 11] }
-
-                    else:
-                        print("Model not available for random or structured grid search")
-                        pass
-
-
-                if self.search == "random":
-                    ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid)
-                elif self.search == "grid":
-                    ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10)
-                    
-
-                elif self.cross_val is not False:
-                    ml_single_model.cross_validation(model, X_train, y_train)  
-                # else:
-                #     model = self.model_dict[self.model](X_train, X_test, y_train, y_test)
-                 # Save the trained model if requested
-                if save_model is True:
-                    pickle.dump(model, open(save_model_name, 'wb'))
-                # Plot the confusion matrix if requested
-                if cm is True:
-                    ML.plot_confusion_matrix(self, model, X_test, y_test)
-
-                
-                        
-        self.misc()
 
     def apply_YOLO(self):
         """

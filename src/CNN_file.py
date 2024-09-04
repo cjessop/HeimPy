@@ -7,27 +7,27 @@ from importlib import import_module
 from sklearn.model_selection import train_test_split
 
 #Import all necessary libraries for CNN training
-try:
-    import tensorflow as tf
-    from keras import layers
-    from keras.models import Sequential
-    from keras.layers import Input
-    from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten, Rescaling
-    from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
-    from keras.layers import RandomFlip, RandomCrop
-    from keras.losses import SparseCategoricalCrossentropy
-    from keras.utils import image_dataset_from_directory    
-    from keras.callbacks import EarlyStopping
-    from keras.models import load_model
-    from keras.optimizers import Adam
-    from keras.applications import mobilenet_v2
-    from keras.applications import MobileNetV2
-    from keras.utils import image_dataset_from_directory
-    from keras.utils import img_to_array
-    #from tensorflow.keras.preprocessing.image import ImageDataGenerator
-except ImportError:
-    print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
-    exit(0)
+# try:
+#     import tensorflow as tf
+#     from keras import layers
+#     from keras.models import Sequential
+#     from keras.layers import Input
+#     from keras.layers import Dense, Dropout, Lambda, AveragePooling2D, Flatten, Rescaling
+#     from keras.layers import Rescaling, RandomContrast, RandomZoom, RandomTranslation, RandomBrightness, RandomRotation
+#     from keras.layers import RandomFlip, RandomCrop
+#     from keras.losses import SparseCategoricalCrossentropy
+#     from keras.utils import image_dataset_from_directory    
+#     from keras.callbacks import EarlyStopping
+#     from keras.models import load_model
+#     from keras.optimizers import Adam
+#     from keras.applications import mobilenet_v2
+#     from keras.applications import MobileNetV2
+#     from keras.utils import image_dataset_from_directory
+#     from keras.utils import img_to_array
+#     #from tensorflow.keras.preprocessing.image import ImageDataGenerator
+# except ImportError:
+#     print("Unable to Import Tensorflow/Keras inside of the Base Classes script")
+#     exit(0)
 
 from abc import ABC, abstractmethod
 import inspect

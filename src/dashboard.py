@@ -11,7 +11,7 @@ if os.path.exists('./dataset.csv'):
     df = pd.read_csv('dataset.csv', index_col=None)
 
 with st.sidebar: 
-    st.image("LOGO.PNG")
+    st.image("../LOGO_NOBG.PNG")
     st.title("HeimdallX")
     choice = st.radio("Navigation", ["Upload","Profiling","Modelling", "Download"])
     st.info("This is the HeimdallX web application dashboard")

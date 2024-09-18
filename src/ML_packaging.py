@@ -54,7 +54,7 @@ class ML_meta:
     data - input dataset in disordered format - Column labelled dataset
     ffnn - whether usage of the feed-forward neural network to make a prediction - True or False
     all - whether or not to apply all classifier models to the singe dataset - True or False
-    model - the name of the model to be applied - String
+    model - the name of the model to be applied - String - default None
     model_dict - dictionary of all models and their corresponding names
     target - the name of the target feature from input dataset - String
     help - whether or not to print the help message - True or False
@@ -77,7 +77,7 @@ class ML_meta:
 
 
     """
-    def __init__(self, data, ffnn=False, all=True, model=False, model_dict={
+    def __init__(self, data, ffnn=False, all=True, model=None, model_dict={
                                         "SupportVector": "SVM",
                                         "KNearestNeighbour": "kNN",
                                         "LinearRegression": "LinReg",
@@ -201,10 +201,6 @@ class ML_meta:
         if flag == False:
             pass
         else:
-            # ml = self.call_ML()
-            #Apply test train split
-            # X, y = self.split_data(self.data)
-
             rf = ml.rf(X_train, X_test, y_train, y_test)
             svm = ml.svm(X_train, X_test, y_train, y_test)
             knn = ml.knn(X_train, X_test, y_train, y_test)
@@ -217,30 +213,43 @@ class ML_meta:
             
             models = [rf, svm, knn, lr, nb, dt, ec, gbc, abc]
 
-            #ml.ffnn(X_train, X_test, y_train, y_test)
-            #ml.nn(X_train, X_test, y_train, y_test)
-
             # Evaluate the performance of each model
             scores = []
-            score_df = pd.DataFrame()
             for model in models:
                 score = ml.model_score(model, X_test, y_test, cross_flag=False)
-                if ("Voting" in str(model)):
-                    score_df["model VotingClassifier"] = score
-                else:
-                    score_df["model " + str(model)] = score
+                # if ("Voting" in str(model)):
+                #     score_df["model VotingClassifier"] = score
+                # else:
+                #     score_df["model " + str(model)] = score
                 scores.append(score)
-                scores.append(str(model))
+                #scores.append(str(model))
+            #column = [f"{item}" for item in models]
+            #column = [f"Model {item}" for item in models]
+            #score_df['Model'] = column
 
-            # for score in scores:
-            #     if "RandomForest" in score:
-            #         RF_score = [0]
-            #         for i in range (0, len(score) - 1):
-            #             if max(score[i]) > RF_score[0]:
-            #                 RF_score[0] = score[i]
-            #         print(RF_score)
+            for title in models:
+                column_names = [f"Model {title[0]} accuracy: " for title in models]
+                score_df = pd.DataFrame(columns=column_names)
 
-        return score_df, rf, svm, knn, lr, nb, dt, ec, gbc, abc
+            iterindex = 0
+            for i, name in score_df.items():
+                #print(iterindex)
+                for label, content in score_df.items():
+                    print(iterindex)
+                    print(f'label: {label}')
+                    print(f'content: {content}', sep='')
+                #print(i, name)
+                #print(score_df.loc[f'Model {title[0]} accuracy: '])
+                score_df.loc[f'Model {title[0]} accuracy: '] = scores[iterindex]
+                iterindex += 1 
+            #score_df[[f"Model {item} accuracy" for item in models]]
+            # for i, row in score_df.iterrows():
+            #     print(row)
+            #     score_df.loc[i, 'Accuracy'] = scores[i]
+            print(scores)
+            score_df.to_csv("test_csv.csv", index=None)
+
+        return scores, rf, svm, knn, lr, nb, dt, ec, gbc, abc
     
     # Applies a specified single model
     def apply_single_model(self, cm=False, save_model=False, save_model_name=False, data=None, target=None):

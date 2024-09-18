@@ -1,0 +1,8 @@
+Model RandomForestClassifier(max_depth=8) accuracy: ,Model SVC() accuracy: ,Model KNeighborsClassifier() accuracy: ,Model LogisticRegression() accuracy: ,"Model Pipeline(steps=[('Normalizing', MinMaxScaler()),
+                ('MultinomialNB', MultinomialNB())]) accuracy: ",Model DecisionTreeClassifier(max_depth=8) accuracy: ,"Model VotingClassifier(estimators=[('lr', LogisticRegression(random_state=1)),
+                             ('rf', RandomForestClassifier(random_state=1)),
+                             ('gnb', GaussianNB()),
+                             ('svc', SVC(random_state=1)),
+                             ('dt', DecisionTreeClassifier(random_state=1)),
+                             ('knn', KNeighborsClassifier())]) accuracy: ",Model GradientBoostingClassifier(random_state=1) accuracy: ,Model AdaBoostClassifier() accuracy: 
+0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158,0.9736842105263158

@@ -1,5 +1,6 @@
 import yaml
 import pandas as pd
+import numpy as np
 import sys
 import os
 import logging
@@ -79,6 +80,10 @@ def evaluate_model_accuracy(ML_instance, data, target_col):
         return model, accuracy
     except Exception as e:
         logging.error(f"Error evaluating model accuracy: {e}")
+
+def clean_model_name(model_str):
+    # Extract just the class name from the model string
+    return model_str.split('(')[0]
     
 def main(args):
     """
@@ -86,32 +91,74 @@ def main(args):
     
     Args:
     args (argparse.Namespace): Command-line arguments parsed by argparse.
-    """
-    config = load_config('config.yaml')
-    datasets_dir = config['datasets_dir']
-    model_in = args.model.upper()
 
-    # Initialise the ML package
+    Returns:
+    None
+    """
+
     data_df = pd.DataFrame()
+    config = load_config('config.yaml')
+    logging.info("Reading config.yaml")
+    datasets_dir = config['datasets_dir']
+    if (args.mode == 'comprehensive'):
+        model_in = args.model.upper()
+        column = [f"{model_in} {item}" for item in os.listdir(datasets_dir)]
+        data_df['Model & Dataset'] = column
+        accuracy_dict = {}
+
     accuracy_scores = pd.DataFrame()
     accuracy_list, model_list = [], []
-
-    column = [f"{model_in} {item}" for item in os.listdir(datasets_dir)]
-    data_df['Model & Dataset'] = column
-    accuracy_dict = {}
+    model_list = ['RF', 'SVM', 'KNN', 'LR', 'NB', 'DT', 'VC', 'GBC', 'ABC']
 
     if args.mode.lower() == "all":
-        ML_instance = ML_meta(data_df, all=False, model=model_in, CNN=False, target='class', test=True)
-        score_df, *_ = ML_instance.apply_all_models(True, data=datasets.load_iris().data, target=datasets.load_iris().target)
-        logging.info(f"Score DataFrame: {score_df.head()}")
+        iris = datasets.load_iris()
+        digits = datasets.load_digits()
+        wine = datasets.load_wine()
+        bc = datasets.load_breast_cancer()
+
+        dataset_list = [iris, digits, wine, bc]
+        datasets_basic = ['iris', 'digits', 'wine', 'bc']
+        
+        data_df = pd.DataFrame({'Model & Dataset': datasets_basic})
+        model_list = ['RF', 'SVM', 'KNN', 'LR', 'NB', 'DT', 'VC', 'GBC', 'ABC']
+        for model in model_list:
+            data_df[model] = 0.0
+
+        logging.info(f"Initial Score DataFrame: \n {data_df.head()} \n")
+        logging.info("All sklearn model tests on basic datasets")
+        
+        ML_instance = ML_meta(data_df, all=True, test=True)
+
+        for idx, dataset in enumerate(dataset_list):
+            dataset_name = datasets_basic[idx]
+            logging.info(f"Processing dataset: {dataset_name}")
+            
+            try:
+                scores, *_ = ML_instance.apply_all_models(True, data=dataset.data, target=dataset.target)
+                logging.info(f"Scores for {dataset_name}: {scores}")
+                
+                if len(scores) != len(model_list):
+                    logging.warning(f"Mismatch in number of scores ({len(scores)}) and models ({len(model_list)}) for {dataset_name}")
+                    continue
+                
+                for model_name, score in zip(model_list, scores):
+                    data_df.loc[data_df['Model & Dataset'] == dataset_name, model_name] = f"{score*100:.2f}%"
+                    logging.info(f"Assigned {score*100:.2f}% to {dataset_name} for {model_name}")
+            
+            except Exception as e:
+                logging.error(f"Error processing {dataset_name}: {str(e)}")
+            
+            print(f"After processing {dataset_name}:")
+            print(data_df)
+            print("/" * 100)
+
+        print("Final DataFrame:")
+        print(data_df)
+
+        data_df.to_csv("sklearn_all_methods", index=None)
 
     elif args.mode.lower() == "comprehensive":
         logging.info("Comprehensive sklearn model test on datasets")
-        logging.info("Please type the name of the classifier you want to test: \n"
-                     "SVM\nKNN\nLR\nRF\nDT\nNB\nGBC\nABC\nEC\nOr Q to exit")
-        input_model = input().strip()
-        if input_model.upper() == 'Q':
-            sys.exit(0)
 
         for filename in os.listdir(datasets_dir):
             file_path = os.path.join(datasets_dir, filename)
@@ -149,21 +196,30 @@ def main(args):
             model, accuracy = evaluate_model_accuracy(ML_instance, df_data, target_col=target_col)
 
             if accuracy is not None:
-                accuracy_list.append(percent(accuracy))
+                accuracy_list.append(np.round(percent(accuracy), decimals=1))
                 model_list.append(model_in)
                 print(accuracy_list)
                 print(model_list)
 
-        print(data_df)
         data_df['Accuracy (%)'] = accuracy_list
-        data_df.to_csv('model_evaluation_results.csv', index=False)
-        logging.info(f"Results saved to model_evaluation_results.csv \n")
-        logging.info(f"Results DataFrame: {data_df} \n")
+        if os.path.exists('model_evaluation_results.csv'):
+            logging.warning("Model evaluation results csv already exists, overwrite? [y/n]")
+            response = input().strip()
+            if response.upper() == 'y' or response.lower() == 'y':
+                os.remove('model_evaluation_results.csv')
+                data_df.to_csv('model_evaluation_results.csv', index=False)
+                logging.info(f"Results saved to model_evaluation_results.csv \n")
+                logging.info(f"Results DataFrame: \n {data_df} \n")
+            else:
+                sys.exit(0)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate machine learning models on datasets.")
-    parser.add_argument('mode', choices=['all', 'comprehensive'], help="Mode of operation")
-    parser.add_argument('model', help="Model to evaluate")
+    parser.add_argument('mode', choices=['all', 'comprehensive', 'crossval'], help="Mode of operation")
+    parser.add_argument('model', nargs='?', help="Model to evaluate (required for comprehensive mode)")
     args = parser.parse_args()
-    
+
+    if args.mode == 'comprehensive' and args.model is None:
+        parser.error("The 'model' argument is required when mode is 'comprehensive'")
+
     main(args)

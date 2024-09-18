@@ -26,6 +26,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import VotingClassifier, AdaBoostClassifier
+from sklearn.pipeline import Pipeline
 
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
@@ -567,12 +568,15 @@ class ML(BasePredictor):
         Returns:
             MultinomialNB: Trained naive bayes model.
         """
+        from sklearn.preprocessing import MinMaxScaler
+        p = Pipeline([('Normalizing',MinMaxScaler()),('MultinomialNB',MultinomialNB())])
+        p.fit(X_train,y_train) 
         nb = MultinomialNB()
-        nb.fit(X_train, y_train)
-        predictions = nb.predict(X_test)
+        p.fit(X_train, y_train)
+        predictions = p.predict(X_test)
         accuracy = accuracy_score(y_test, predictions)
         #print(classification_report(y_test, predictions))
-        return nb, accuracy
+        return p, accuracy
 
     def gbc(self, X_train, X_test, y_train, y_test, random_state=1):
         """
@@ -807,7 +811,7 @@ class ML(BasePredictor):
             model: The trained machine learning model.
             X_test (pandas.DataFrame): Test features.
             y_test (pandas.Series): Test target variable.
-            cross_flag: Flag to check if the model score is determined via cross validation
+            cross_flag: Flag to check if the model score is determined via stratified K-fold cross validation
 
         Returns:
             array: Cross-validation scores.
@@ -820,12 +824,11 @@ class ML(BasePredictor):
             return scores
         
         else:
-            predictions = model.predict(X_test)
+            print(model)
+            predictions = model[0].predict(X_test)
             scores = accuracy_score(y_test, predictions)
 
             return scores
-        
-        
 
     def fit(self, X, y):
         """

@@ -1,3 +1,7 @@
+# Author: Christopher Jessop, DSTL
+
+# HEIMDALL v0.5
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -104,14 +108,14 @@ class BasePredictor(ABC):
         Makes predictions on new data using the trained model.
 
         Args:
-            X (pandas.DataFrame): Input features.
+            X (pandas.DataFrame): Input features
 
         Returns:
-            numpy.ndarray: Predicted values.
+            numpy.ndarray: Predicted values
 
         Raises:
             NotImplementedError: This is an abstract method and should be
-                implemented in the derived class.
+                implemented in the derived class
         """
         
         raise NotImplementedError("predict method must be implemented in the derived class.")
@@ -119,10 +123,10 @@ class BasePredictor(ABC):
     @classmethod 
     def _get_param_names(cls):
         """
-        Retrieves the names of parameters for the class's constructor.
+        Retrieves the names of parameters for the class's constructor
 
         Returns:
-            list: A sorted list of parameter names, excluding 'self'.
+            list: A sorted list of parameter names, excluding 'self'
         """
         init = getattr(cls.__init__, 'deprecated_original', cls.__init__)
         if init is object.__init__:
@@ -142,13 +146,13 @@ class BasePredictor(ABC):
     
     def get_params(self, deep=True):
         """
-        Returns a dictionary of the class's hyperparameters.
+        Returns a dictionary of the class's hyperparameters
 
         Args:
-            deep (bool, optional): If True, includes parameters for sub-objects that have a get_params() method. Defaults to True.
+            deep (bool, optional): If True, includes parameters for sub-objects that have a get_params() method. Defaults to True
 
         Returns:
-            dict: A dictionary of parameter names mapped to their values.
+            dict: A dictionary of parameter names mapped to their values
         """
         out = dict()
         for key in self._get_param_names():
@@ -164,8 +168,11 @@ class BasePredictor(ABC):
         """
         Resets the model to its initial state.
 
+        Args:
+            None
+
         Returns:
-            BasePredictor: A new instance of the class with the same parameters.
+            BasePredictor: A new instance of the class with the same parameters
         """
         new = self.__class__(**self.get_params())
         return new
@@ -175,10 +182,10 @@ class BasePredictor(ABC):
         Loads new parameters into the class instance.
 
         Args:
-            params (dict, optional): Dictionary of new parameters. Defaults to None.
+            params (dict, optional): Dictionary of new parameters. Defaults to None
 
         Returns:
-            BasePredictor: Updated instance of the class.
+            BasePredictor: Updated instance of the class
         """
         self = self.__class__(**params)
         print("params loaded")
@@ -189,10 +196,10 @@ def import_function(qualified_name):
     Imports a callable object (function, class, etc.) based on its qualified name.
 
     Args:
-        qualified_name (str): The fully qualified name of the callable.
+        qualified_name (str): The fully qualified name of the callable
 
     Returns:
-        callable: The imported callable object.
+        callable: The imported callable object
     """
     path = qualified_name.split('.')
     module = builtins
@@ -217,10 +224,10 @@ class PipelineLoader(yaml.SafeLoader):
         Loads a YAML stream and returns the data.
 
         Args:
-            instream (file-like object): The input stream to read from.
+            instream (file-like object): The input stream to read from
 
         Returns:
-            dict: The parsed YAML data.
+            dict: The parsed YAML data
         """
         loader = cls(instream)
 
@@ -234,11 +241,11 @@ class PipelineLoader(yaml.SafeLoader):
         Constructs a mapping (dictionary) from a YAML node.
 
         Args:
-            node (yaml.Node): The YAML node to construct the mapping from.
-            deep (bool, optional): Whether to deeply construct the mapping. Defaults to False.
+            node (yaml.Node): The YAML node to construct the mapping from
+            deep (bool, optional): Whether to deeply construct the mapping. Defaults to False
 
         Returns:
-            dict: The constructed mapping.
+            dict: The constructed mapping
         """
         mapping = super().construct_mapping(node, deep)
 
@@ -254,10 +261,10 @@ class PipelineLoader(yaml.SafeLoader):
         Constructs a reference from a YAML node.
 
         Args:
-            node (yaml.Node): The YAML node containing the reference.
+            node (yaml.Node): The YAML node containing the reference
 
         Returns:
-            Ref: A Ref object constructed from the reference.
+            Ref: A Ref object constructed from the reference
         """
         ref = self.construct_scalar(node)
         
@@ -273,11 +280,11 @@ class PipelineLoader(yaml.SafeLoader):
         Constructs a callable object from a YAML node.
 
         Args:
-            name (str): The name of the object to call.
-            node (yaml.Node): The YAML node containing arguments for the call.
+            name (str): The name of the object to call
+            node (yaml.Node): The YAML node containing arguments for the call
 
         Returns:
-            Call: A Call object representing the function call.
+            Call: A Call object representing the function call
         """
         try: 
             object = import_function(name)
@@ -305,10 +312,10 @@ class PipelineLoader(yaml.SafeLoader):
         Loads a pipeline configuration from a YAML file.
 
         Args:
-            filename (str): The path to the YAML file.
+            filename (str): The path to the YAML file
 
         Returns:
-            dict: The loaded pipeline configuration.
+            dict: The loaded pipeline configuration
         """
         with open(filename, 'r') as data:
             return PipelineLoader.load(data) or {}
@@ -322,7 +329,10 @@ class ML(BasePredictor):
         Initialises the ML class with the given data.
 
         Args:
-            data (pandas.DataFrame): The dataset to work with.
+            data (pandas.DataFrame): The dataset to work with
+
+        Returns:
+            None
         """
         self.data = data
 
@@ -331,10 +341,10 @@ class ML(BasePredictor):
         Splits the data into features (X) and target variable (y).
 
         Args:
-            y (str): Name of the target variable column.
+            y (str): Name of the target variable column
 
         Returns:
-            tuple: (X, y) where X is the feature matrix and y is the target vector.
+            tuple: (X, y) where X is the feature matrix and y is the target vector
         """
         X = self.data.drop(y, axis=1)
         y = self.data[y]
@@ -345,11 +355,11 @@ class ML(BasePredictor):
         Encodes categorical features in the data.
 
         Args:
-            X (pandas.DataFrame): Input features.
-            y (pandas.Series): Target variable.
+            X (pandas.DataFrame): Input features
+            y (pandas.Series): Target variable
 
         Returns:
-            tuple: (X, y) with encoded categorical features.
+            tuple: (X, y) with encoded categorical features
         """
         X = pd.get_dummies(X, drop_first=True)
         y = pd.get_dummies(y, drop_first=True)
@@ -360,12 +370,12 @@ class ML(BasePredictor):
         Handles missing data in the dataset.
 
         Args:
-            X (pandas.DataFrame): Input features.
-            y (pandas.Series): Target variable.
-            strategy (str, optional): Imputation strategy for missing values. Defaults to 'mean'.
+            X (pandas.DataFrame): Input features
+            y (pandas.Series): Target variable
+            strategy (str, optional): Imputation strategy for missing values. Defaults to 'mean'
 
         Returns:
-            tuple: (X, y) with imputed missing values.
+            tuple: (X, y) with imputed missing values
         """
         imputer = SimpleImputer(missing_values=np.nan, strategy=strategy)
         
@@ -386,9 +396,9 @@ class ML(BasePredictor):
         Extracts features from classification data.
 
         Args:
-            X (pandas.DataFrame): Input features.
-            y (pandas.Series): Target variable.
-            test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2.
+            X (pandas.DataFrame): Input features
+            y (pandas.Series): Target variable
+            test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2
 
         Returns:
             tuple: (X_train, X_test, y_train, y_test)
@@ -401,9 +411,9 @@ class ML(BasePredictor):
         Splits data into training and testing sets.
 
         Args:
-            X (pandas.DataFrame): Input features.
-            y (pandas.Series): Target variable.
-            test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2.
+            X (pandas.DataFrame): Input features
+            y (pandas.Series): Target variable
+            test_size (float, optional): Proportion of the dataset to include in the test split. Defaults to 0.2
 
         Returns:
             tuple: (X_train, X_test, y_train, y_test)
@@ -416,11 +426,11 @@ class ML(BasePredictor):
         Scales the data using standardisation.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
 
         Returns:
-            tuple: (X_train, X_test) with scaled features.
+            tuple: (X_train, X_test) with scaled features
         """
         scaler = StandardScaler()
         X_train = scaler.fit_transform(X_train)
@@ -432,11 +442,14 @@ class ML(BasePredictor):
         Prepares data for modelling.
 
         Args:
-            name (str): Name of the dataset file.
-            label (str): Name of the target variable column.
-            columns (list): List of columns to drop.
-            end_range (int): End range for iterating over the dataset.
-            index_column (bool, optional): Whether to use the first column as an index. Defaults to False.
+            name (str): Name of the dataset file
+            label (str): Name of the target variable column
+            columns (list): List of columns to drop
+            end_range (int): End range for iterating over the dataset
+            index_column (bool, optional): Whether to use the first column as an index. Defaults to False
+
+        Returns:
+            None
         """
         df1 = pd.read_csv(self.data, index_col=index_column)
         df1['class'] = label
@@ -455,13 +468,13 @@ class ML(BasePredictor):
         Trains a logistic regression model.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            y_train (pandas.Series): Training target variable.
-            X_test  (pandas.DataFrame): Testing features.
-            y_test  (pandas.Series): Testing target variable.
+            X_train (pandas.DataFrame): Training features
+            y_train (pandas.Series): Training target variable
+            X_test  (pandas.DataFrame): Testing features
+            y_test  (pandas.Series): Testing target variable
 
         Returns:
-            LogisticRegressionModel: Trained logistic regression model.
+            LogisticRegressionModel: Trained logistic regression model
         """
         logmodel = LogisticRegression()
         logmodel.fit(X_train, y_train)
@@ -475,14 +488,14 @@ class ML(BasePredictor):
         Trains a k-nearest neighbours (KNN) model.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            y_train (pandas.Series): Training target variable.
-            X_test  (pandas.DataFrame): Testing features.
-            y_test  (pandas.Series): Testing target variable.
-            n_neighbors (int, optional): Number of neighbours to consider. Defaults to 5.
+            X_train (pandas.DataFrame): Training features
+            y_train (pandas.Series): Training target variable
+            X_test  (pandas.DataFrame): Testing features
+            y_test  (pandas.Series): Testing target variable
+            n_neighbors (int, optional): Number of neighbours to consider. Defaults to 5
 
         Returns:
-            KNNModel: Trained KNN model.
+            KNNModel: Trained KNN model
         """
         knn = KNeighborsClassifier(n_neighbors=n_neighbors)
         knn.fit(X_train, y_train)
@@ -496,14 +509,14 @@ class ML(BasePredictor):
         Trains a Support Vector Machine (SVM) model.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            y_train (pandas.Series): Training target variable.
-            X_test  (pandas.DataFrame): Testing features.
-            y_test  (pandas.Series): Testing target variable.
-            kernel  (str, optional): Desired SVM kernel. Defaults to 'rbf'.
+            X_train (pandas.DataFrame): Training features
+            y_train (pandas.Series): Training target variable
+            X_test  (pandas.DataFrame): Testing features
+            y_test  (pandas.Series): Testing target variable
+            kernel  (str, optional): Desired SVM kernel. Defaults to 'rbf'
 
         Returns:
-            svc_model: Trained SVM model.
+            svc_model: Trained SVM model
         """
         svc_model = SVC(kernel=kernel)
         svc_model.fit(X_train, y_train)
@@ -517,14 +530,14 @@ class ML(BasePredictor):
         Trains a decision tree classifier.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
-            max_depth (int, optional): Maximum depth of the tree. Defaults to 8.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
+            max_depth (int, optional): Maximum depth of the tree. Defaults to 8
 
         Returns:
-            DecisionTreeClassifier: Trained decision tree model.
+            DecisionTreeClassifier: Trained decision tree model
         """
         dtree = DecisionTreeClassifier(max_depth=max_depth)
         dtree.fit(X_train, y_train)
@@ -538,15 +551,15 @@ class ML(BasePredictor):
         Trains a random forest classifier.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
-            n_estimators (int, optional): Number of trees in the forest. Defaults to 100.
-            max_depth (int, optional): Maximum depth of the trees. Defaults to 8.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
+            n_estimators (int, optional): Number of trees in the forest. Defaults to 100
+            max_depth (int, optional): Maximum depth of the trees. Defaults to 8
 
         Returns:
-            RandomForestClassifier: Trained random forest model.
+            RandomForestClassifier: Trained random forest model
         """
         rfc = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
         rfc.fit(X_train, y_train)
@@ -560,13 +573,13 @@ class ML(BasePredictor):
         Trains a naive bayes classifier.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
 
         Returns:
-            MultinomialNB: Trained naive bayes model.
+            MultinomialNB: Trained naive bayes model
         """
         from sklearn.preprocessing import MinMaxScaler
         p = Pipeline([('Normalizing',MinMaxScaler()),('MultinomialNB',MultinomialNB())])
@@ -583,14 +596,14 @@ class ML(BasePredictor):
         Trains a gradient boosted classifier.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
-            random_state (int, optional): Random state for reproducibility. Defaults to 1.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
+            random_state (int, optional): Random state for reproducibility. Defaults to 1
 
         Returns:
-            GradientBoostingClassifier: Trained gradient boosted classifier model.
+            GradientBoostingClassifier: Trained gradient boosted classifier model
         """
         gbc = GradientBoostingClassifier(random_state=random_state)
         gbc.fit(X_train, y_train)
@@ -604,13 +617,13 @@ class ML(BasePredictor):
         Trains an AdaBoost classifier.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
 
         Returns:
-            AdaBoostClassifier: Trained AdaBoost classifier model.
+            AdaBoostClassifier: Trained AdaBoost classifier model
         """
         abc = AdaBoostClassifier()
         abc.fit(X_train, y_train)
@@ -624,14 +637,14 @@ class ML(BasePredictor):
         Trains an ensemble classifier using voting.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
-            voting: Voting method for final classification (hard or soft voting).
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
+            voting: Voting method for final classification (hard or soft voting)
 
         Returns:
-            VotingClassifier: Trained ensemble classifier model.
+            VotingClassifier: Trained ensemble classifier model
         """
         clf1 = LogisticRegression(random_state=random_state)
         clf2 = RandomForestClassifier(random_state=random_state)
@@ -640,7 +653,12 @@ class ML(BasePredictor):
         clf5 = DecisionTreeClassifier(random_state=random_state)
         clf6 = KNeighborsClassifier()
 
-        estimators = [('lr', clf1), ('rf', clf2), ('gnb', clf3), ('svc', clf4), ('dt', clf5), ('knn', clf6)]
+        estimators = [  ('lr', clf1),
+                        ('rf', clf2),
+                        ('gnb', clf3),
+                        ('svc', clf4),
+                        ('dt', clf5),
+                        ('knn', clf6)  ]
 
         eclf = VotingClassifier(estimators=estimators, voting=voting)
         eclf.fit(X_train, y_train)
@@ -654,13 +672,13 @@ class ML(BasePredictor):
         Applies K-fold cross-validation to a selected model.
 
         Args:
-            model: The machine learning model to apply K-fold CV to.
-            X: The feature data.
-            y: The target variable.
-            cv: Number of folds in a stratified KFold.
+            model: The machine learning model to apply K-fold CV to
+            X: The feature data
+            y: The target variable
+            cv: Number of folds in a stratified KFold
 
         Returns:
-            array: Scores from K-fold cross-validation for the selected model.
+            array: Scores from K-fold cross-validation for the selected model
         """
         scores = cross_val_score(model, X, y, cv=cv)
         #print(scores)
@@ -672,16 +690,16 @@ class ML(BasePredictor):
         Performs grid search to find the best hyperparameters.
 
         Args:
-            model: The machine learning model to tune.
-            param_grid (dict): The parameter grid to search over.
-            X_train (pandas.DataFrame): Training features.
-            X_test (pandas.DataFrame): Test features.
-            y_train (pandas.Series): Training target variable.
-            y_test (pandas.Series): Test target variable.
-            cv (int, optional): Number of cross-validation folds. Defaults to 10.
+            model: The machine learning model to tune
+            param_grid (dict): The parameter grid to search over
+            X_train (pandas.DataFrame): Training features
+            X_test (pandas.DataFrame): Test features
+            y_train (pandas.Series): Training target variable
+            y_test (pandas.Series): Test target variable
+            cv (int, optional): Number of cross-validation folds. Defaults to 10
 
         Returns:
-            GridSearchCV: The fitted grid search object.
+            GridSearchCV: The fitted grid search object
         """
         grid = GridSearchCV(model, param_grid, cv=cv)
         grid.fit(X_train, y_train)
@@ -696,15 +714,15 @@ class ML(BasePredictor):
         Performs randomised search to find the best hyperparameters.
 
         Args:
-            model: The machine learning model to tune.
-            X (pandas.DataFrame): Feature data.
-            y (pandas.Series): Target variable.
-            cv (int, optional): Number of cross-validation folds. Defaults to 5.
-            n_iter (int, optional): Number of parameter settings sampled. Defaults to 100.
-            param_grid (dict, optional): The parameter grid to search over. Defaults to None.
+            model: The machine learning model to tune
+            X (pandas.DataFrame): Feature data
+            y (pandas.Series): Target variable
+            cv (int, optional): Number of cross-validation folds. Defaults to 5
+            n_iter (int, optional): Number of parameter settings sampled. Defaults to 100
+            param_grid (dict, optional): The parameter grid to search over. Defaults to None
 
         Returns:
-            RandomizedSearchCV: The fitted randomised search object.
+            RandomizedSearchCV: The fitted randomised search object
         """
         random = RandomizedSearchCV(model, param_grid, cv=cv, n_iter=n_iter)
         random.fit(X, y)
@@ -712,28 +730,31 @@ class ML(BasePredictor):
         print(random.best_estimator_)
         return random
     
-    def mlp(self, X_train, X_test, y_train, y_test, hidden_layers=1, neurons=8, activation='relu', optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'], epochs=25, batch_size=32, validation_split=0.2, verbose=1):
+    def mlp(self, X_train, X_test, y_train, y_test, hidden_layers=1, 
+            neurons=8, activation='relu', optimizer='adam', 
+            loss='binary_crossentropy', metrics=['accuracy'], 
+            epochs=25, batch_size=32, validation_split=0.2, verbose=1):
         """
         Trains a Multi-Layer Perceptron (MLP) model.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            y_train (pandas.Series): Training target variable.
-            X_test (pandas.DataFrame): Testing features.
-            y_test (pandas.Series): Testing target variable.
-            hidden_layers (int, optional): Number of hidden layers. Defaults to 1.
-            neurons (int, optional): Number of neurons per hidden layer. Defaults to 8.
-            activation (str, optional): Activation function for hidden layers. Defaults to 'relu'.
-            optimizer (str, optional): Optimiser to use. Defaults to 'adam'.
-            loss (str, optional): Loss function. Defaults to 'binary_crossentropy'.
-            metrics (list, optional): List of metrics to evaluate. Defaults to ['accuracy'].
-            epochs (int, optional): Number of training epochs. Defaults to 25.
-            batch_size (int, optional): Batch size for training. Defaults to 32.
-            validation_split (float, optional): Proportion of training data to use as validation set. Defaults to 0.2.
-            verbose (int, optional): Verbosity mode. Defaults to 1.
+            X_train (pandas.DataFrame): Training features
+            y_train (pandas.Series): Training target variable
+            X_test (pandas.DataFrame): Testing features
+            y_test (pandas.Series): Testing target variable
+            hidden_layers (int, optional): Number of hidden layers. Defaults to 1
+            neurons (int, optional): Number of neurons per hidden layer. Defaults to 8
+            activation (str, optional): Activation function for hidden layers. Defaults to 'relu'
+            optimizer (str, optional): Optimiser to use. Defaults to 'adam'
+            loss (str, optional): Loss function. Defaults to 'binary_crossentropy'
+            metrics (list, optional): List of metrics to evaluate. Defaults to ['accuracy']
+            epochs (int, optional): Number of training epochs. Defaults to 25
+            batch_size (int, optional): Batch size for training. Defaults to 32
+            validation_split (float, optional): Proportion of training data to use as validation set. Defaults to 0.2
+            verbose (int, optional): Verbosity mode. Defaults to 1
 
         Returns:
-            Sequential: Trained MLP model.
+            Sequential: Trained MLP model
         """
         model = Sequential()
         model.add(Dense(neurons, activation=activation))
@@ -741,8 +762,14 @@ class ML(BasePredictor):
             model.add(Dense(neurons, activation=activation))
         model.add(Dense(1, activation='sigmoid'))
         model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-        early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=25)
-        model.fit(x=X_train, y=y_train, epochs=epochs, batch_size=batch_size, validation_split=validation_split, verbose=verbose, callbacks=[early_stop])
+
+        early_stop = EarlyStopping(monitor='val_loss',
+                                    mode='min', verbose=1, patience=25)
+        
+        model.fit(x=X_train, y=y_train, epochs=epochs, batch_size=batch_size,
+                   validation_split=validation_split,
+                     verbose=verbose, callbacks=[early_stop])
+        
         loss_df = pd.DataFrame(model.history.history)
         loss_df.plot()
         predictions = model.predict(X_test)
@@ -754,12 +781,12 @@ class ML(BasePredictor):
         Plots a confusion matrix for the given model's predictions.
 
         Args:
-            model: The trained machine learning model.
-            X_test (pandas.DataFrame): Test features.
-            y_test (pandas.Series): Test target variable.
+            model: The trained machine learning model
+            X_test (pandas.DataFrame): Test features
+            y_test (pandas.Series): Test target variable
 
         Returns:
-            ConfusionMatrix: A seaborn heatmap of the confusion matrix.
+            ConfusionMatrix: A seaborn heatmap of the confusion matrix
         """
         predictions = model.predict(X_test)
         predictions = np.round(predictions)
@@ -773,9 +800,12 @@ class ML(BasePredictor):
         Compares classification reports for multiple models.
 
         Args:
-            models (list): List of trained models.
-            X_test (pandas.DataFrame): Test features.
-            y_test (pandas.Series): Test target variable.
+            models (list): List of trained models
+            X_test (pandas.DataFrame): Test features
+            y_test (pandas.Series): Test target variable
+        
+        Returns:
+            None
         """
         for model in models:
             predictions = model.predict(X_test)
@@ -786,12 +816,12 @@ class ML(BasePredictor):
         Identifies the best model based on accuracy.
 
         Args:
-            models (list): List of trained models.
-            X_test (pandas.DataFrame): Test features.
-            y_test (pandas.Series): Test target variable.
+            models (list): List of trained models
+            X_test (pandas.DataFrame): Test features
+            y_test (pandas.Series): Test target variable
 
         Returns:
-            tuple: The best model and its accuracy.
+            tuple: The best model and its accuracy
         """
         best_model = None
         best_accuracy = 0
@@ -808,13 +838,13 @@ class ML(BasePredictor):
         Evaluates the model using repeated stratified K-fold cross-validation.
 
         Args:
-            model: The trained machine learning model.
-            X_test (pandas.DataFrame): Test features.
-            y_test (pandas.Series): Test target variable.
+            model: The trained machine learning model
+            X_test (pandas.DataFrame): Test features
+            y_test (pandas.Series): Test target variable
             cross_flag: Flag to check if the model score is determined via stratified K-fold cross validation
 
         Returns:
-            array: Cross-validation scores.
+            array: Cross-validation scores
         """
 
         if (cross_flag == True):
@@ -841,11 +871,11 @@ class ML(BasePredictor):
         Makes predictions using the given model.
 
         Args:
-            model: The trained machine learning model.
-            X (pandas.DataFrame): Input features.
+            model: The trained machine learning model
+            X (pandas.DataFrame): Input features
 
         Returns:
-            numpy.ndarray: Predicted values.
+            numpy.ndarray: Predicted values
         """
         prediction = model.predict(X)
         return prediction
@@ -859,14 +889,14 @@ class svm(ML):
         Trains and runs an SVM model.
 
         Args:
-            X_train (pandas.DataFrame): Training features.
-            y_train (pandas.Series): Training target variable.
-            X_test (pandas.DataFrame): Test features.
-            y_test (pandas.Series): Test target variable.
-            kernel (str, optional): Kernel type for SVM. Defaults to 'rbf'.
+            X_train (pandas.DataFrame): Training features
+            y_train (pandas.Series): Training target variable
+            X_test (pandas.DataFrame): Test features
+            y_test (pandas.Series): Test target variable
+            kernel (str, optional): Kernel type for SVM. Defaults to 'rbf'
 
         Returns:
-            SVC: Trained SVM model.
+            SVC: Trained SVM model
         """
         svc_model = SVC(kernel=kernel)
         svc_model.fit(X_train, y_train)
@@ -883,11 +913,14 @@ class ffnn(BasePredictor):
         Initialises the ffnn class for creating a feedforward neural-network.
 
         Args:
-            hidden_layers (list, optional): List of hidden layer sizes. Defaults to [].
-            dropout (float, optional): Dropout rate for regularisation. Defaults to 0.
-            epochs (int, optional): Number of training epochs. Defaults to 5.
-            activation (list, optional): List of activation functions for hidden layers. Defaults to [].
-            batch_size (int, optional): Batch size for training. Defaults to None.
+            hidden_layers (list, optional): List of hidden layer sizes. Defaults to []
+            dropout (float, optional): Dropout rate for regularisation. Defaults to 0
+            epochs (int, optional): Number of training epochs. Defaults to 5
+            activation (list, optional): List of activation functions for hidden layers. Defaults to []
+            batch_size (int, optional): Batch size for training. Defaults to None
+        
+        Returns:
+            None
         """
         self.hidden_layers = hidden_layers
         self.dropout = dropout
@@ -912,8 +945,11 @@ class ffnn(BasePredictor):
         Trains the feedforward neural network.
 
         Args:
-            X (pandas.DataFrame): Input features.
-            y (pandas.Series): Target variable.
+            X (pandas.DataFrame): Input features
+            y (pandas.Series): Target variable
+
+        Returns:
+            None
         """
         try: 
             self.model.fit(X, y, epochs=self.epochs, batch_size=self.batch_size)
@@ -926,17 +962,13 @@ class ffnn(BasePredictor):
         Makes predictions using the trained feedforward neural network.
 
         Args:
-            X (pandas.DataFrame): Input features.
+            X (pandas.DataFrame): Input features
 
         Returns:
-            numpy.ndarray: Predicted values.
+            numpy.ndarray: Predicted values
         """
         try:
             return self.model.predict(X)
         except ValueError as e:
             print(f'Error in predicting the model: {e}')
             pass
-# Generate some data to test the class using numpy and pandas
-data = np.random.randint(0, 100, (1000, 50))
-data = pd.DataFrame(data)
-data['target'] = np.random.randint(0, 2, 1000)

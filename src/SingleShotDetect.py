@@ -1,3 +1,5 @@
+# Author: Christopher Jessop, DSTL
+
 import json
 import os
 import random

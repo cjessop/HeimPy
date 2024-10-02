@@ -1,4 +1,5 @@
   datasets_dir: "../datasets/"
+  save_dir: "../test_saves/"
   
   model_options:
     - SVM
@@ -10,3 +11,7 @@
     - GBC
     - ABC
     - EC
+
+
+  cat_cols: ["sex","exng","caa","cp","fbs","restecg","slp","thall"]
+  con_cols: ["age","trtbps","chol","thalachh","oldpeak"]

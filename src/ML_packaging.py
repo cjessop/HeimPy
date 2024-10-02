@@ -1,9 +1,11 @@
-# HEIMDALL
+# Author: Christopher Jessop, DSTL
+
+# HEIMDALL v0.5
 
 from audioop import cross
-from BaseMLClasses import ML
-from BaseMLClasses import ffnn
-from CNN_file import CNN
+from .BaseMLClasses import ML
+from .BaseMLClasses import ffnn
+from .CNN_file import CNN
 
 try:
     import tensorflow as tf
@@ -19,7 +21,7 @@ import os
 import numpy as np
 import pandas as pd
 #import plotly.express as px
-from yolo_class import Utils, YOLO_main, Object_tracker, YOLO_detector
+from .yolo_class import Utils, YOLO_main, Object_tracker, YOLO_detector
 import matplotlib.pyplot as plt
 import warnings
 import glob
@@ -49,33 +51,6 @@ class ML_meta:
     - YOLOv8
 
     Includes the call to instantiate the ML class and apply test-train split
-
-    Args: 
-    data - input dataset in disordered format - Column labelled dataset
-    ffnn - whether usage of the feed-forward neural network to make a prediction - True or False
-    all - whether or not to apply all classifier models to the singe dataset - True or False
-    model - the name of the model to be applied - String - default None
-    model_dict - dictionary of all models and their corresponding names
-    target - the name of the target feature from input dataset - String
-    help - whether or not to print the help message - True or False
-    clean - whether or not to delete all saved models - True or False
-    search - perform grid search either randomly or evenly spaced on a grid - String of 'random' or 'grid'
-    cross_val - perform k-fold cross validation - True or False
-    CNN - Apply a convolutional Neural Network - True or False
-    on_GPU - Run the CNN on a GPU - True or False
-    YOLO - Instantiate an instance of the YOLO class for training or predicition - True or False
-    data_path - The path to the dataset - default None
-    image_path - The path to the image library - default None
-    YOLO_model - The path or name of the trained YOLO algoritm - default None
-    video_path - The path to the video on which you would like to predict on - default None
-    video_capture - Use a connected image or camera sensor for live input to predict on - True or False
-    YOLO_train - Flag to train a new YOLO model on, requires data_path and image_path to be not None - True or False
-    test - Flag to check if the models are being used in the test script or not
-    
-    Returns:
-    None
-
-
     """
     def __init__(self, data, ffnn=False, all=True, model=None, model_dict={
                                         "SupportVector": "SVM",
@@ -93,6 +68,35 @@ class ML_meta:
                                     image_path=None, image_number=None, YOLO_model=None,
                                     video_path=None, video_capture=False, YOLO_train=False,
                                     YOLO_save=False, test=False):
+        """
+        Class initialisation - Initialise the ML_Meta class 
+
+
+        Args: 
+            data: input dataset in disordered format - Column labelled dataset
+            ffnn: whether usage of the feed-forward neural network to make a prediction - True or False
+            all: whether or not to apply all classifier models to the singe dataset - True or False
+            model: the name of the model to be applied - String: default None
+            model_dict: dictionary of all models and their corresponding names
+            target: the name of the target feature from input dataset - String
+            help: whether or not to print the help message - True or False
+            clean: whether or not to delete all saved models - True or False
+            search: perform grid search either randomly or evenly spaced on a grid - String of 'random' or 'grid'
+            cross_val: perform k-fold cross validation - True or False
+            CNN: Apply a convolutional Neural Network - True or False
+            on_GPU: Run the CNN on a GPU - True or False
+            YOLO: Instantiate an instance of the YOLO class for training or predicition - True or False
+            data_path: The path to the dataset - default None
+            image_path: The path to the image library - default None
+            YOLO_model: The path or name of the trained YOLO algoritm - default None
+            video_path: The path to the video on which you would like to predict on - default None
+            video_capture: Use a connected image or camera sensor for live input to predict on - True or False
+            YOLO_train: Flag to train a new YOLO model on, requires data_path and image_path to be not None - True or False
+            test: Flag to check if the models are being used in the test script or not
+    
+        Returns:
+            None
+        """
         self.data          = data
         self.ffnn          = ffnn
         self.all           = all
@@ -120,10 +124,11 @@ class ML_meta:
         """
         Handles miscellaneous operations such as displaying help information and deleting saved models.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         if self.help is True:
             print("This is a meta class that handles the application of all ML models. The current models are: Support Vector Machine, \
@@ -150,10 +155,11 @@ class ML_meta:
         """
         Instantiates the ML class to apply machine learning algorithms to the dataset.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            ML: An instance of the ML class.
+            ML: An instance of the ML class
         """
         ml = ML(self.data) # Creates an instance of the ML class
         return ml
@@ -165,10 +171,10 @@ class ML_meta:
 
         Args:
             encode_categorical (bool, optional): If True, encodes categorical features. Defaults to True.
-            y (str, optional): Name of the target variable. Defaults to 'target'.
+            y (str, optional): Name of the target variable. Defaults to 'target'
 
         Returns:
-            tuple: X and y data after splitting (and encoding if applicable).
+            tuple: X and y data after splitting (and encoding if applicable)
         """
         ml = self.call_ML()
         X, y = ml.split_X_y(self.target)
@@ -188,6 +194,9 @@ class ML_meta:
             flag (bool, optional): If True, applies the models. Defaults to False.
             data: Input data (X_train)
             target: Label (y_train)
+        
+        Returns:
+            None
         """
 
         ml = self.call_ML()
@@ -246,20 +255,20 @@ class ML_meta:
             # for i, row in score_df.iterrows():
             #     print(row)
             #     score_df.loc[i, 'Accuracy'] = scores[i]
-            print(scores)
-            score_df.to_csv("test_csv.csv", index=None)
+            #print(scores)
+            #score_df.to_csv("test_csv.csv", index=None)
 
         return scores, rf, svm, knn, lr, nb, dt, ec, gbc, abc
     
     # Applies a specified single model
-    def apply_single_model(self, cm=False, save_model=False, save_model_name=False, data=None, target=None):
+    def apply_single_model(self, cm=False, save_model='No', save_model_name='', data=None, target=None):
         """
         Applies a single machine learning model to the dataset.
 
         Args:
-            cm (bool, optional): If True, plots a confusion matrix. Defaults to False.
-            save_model (bool, optional): If True, saves the trained model. Defaults to False.
-            save_model_name (str, optional): Name to use for the saved model file. Defaults to False.
+            cm (bool, optional): If True, plots a confusion matrix. Defaults to False
+            save_model (str, optional): pickle/onnx, saves the trained model in either pickle or onnx format. Defaults to False
+            save_model_name (str, optional): Name to use for the saved model file. Defaults to False
 
         Returns:
             Model object
@@ -308,7 +317,7 @@ class ML_meta:
             accuracy = None
 
             if self.model in self.model_dict.keys():
-                print("Selected single model is " + str(self.model_dict[self.model]))
+                #print("Selected single model is " + str(self.model_dict[self.model]))
                 model, accuracy = self.model_dict[self.model](X_train, X_test, y_train, y_test)
                 # Perform hyperparameter tuning if requested
                 if self.search is not None:
@@ -365,18 +374,26 @@ class ML_meta:
                         pass
 
                 if self.search == "random":
-                    ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid)
+                    random_ = ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid)
                 elif self.search == "grid":
-                    ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10)
-                    
-
+                    grid = ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10)
                 elif self.cross_val is not False:
                     ml_single_model.cross_validation(model, X_train, y_train)  
                 # else:
                 #     model = self.model_dict[self.model](X_train, X_test, y_train, y_test)
                  # Save the trained model if requested
-                if save_model is True:
+                if save_model.lower() == 'pickle':
                     pickle.dump(model, open(save_model_name, 'wb'))
+                elif save_model.lower() == 'onnx':
+                    try: 
+                        from skl2onnx import to_onnx
+
+                        onx = to_onnx(model, X[:1])
+                        with open("rf_iris.onnx", "wb") as f:
+                            f.write(onx.SerializeToString())
+                    except Exception as e:
+                        print(f"Import Error: {e}")
+                    pass
                 # Plot the confusion matrix if requested
                 if cm is True:
                     ML.plot_confusion_matrix(self, model, X_test, y_test)
@@ -384,17 +401,23 @@ class ML_meta:
                 
                         
         self.misc()
-        return model, accuracy
+        if self.search == "random":
+            return model, accuracy, random_
+        elif self.search == "grid":
+            model, accuracy, grid
+        else:
+            return model, accuracy
 
     # Applies a feedforward neural network model (FFNN)
     def apply_neural_net(self):
         """
         Applies a feedforward neural network (FFNN) to the dataset for predictions.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         if self.ffnn:
             ffnn_predictor = ffnn(3, activation='sigmoid', batch_size=5)
@@ -409,10 +432,11 @@ class ML_meta:
         """
         Applies the Convolutional Neural Network (CNN) architecture defined in BaseMLClasses.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         if self.CNN:
             X, y = self.split_data(encode_categorical=True)
@@ -483,11 +507,11 @@ class ML_meta:
         Applies or trains a YOLO model on an input video or live capture.
 
         Args:
-        None
+            None
 
         Returns:
-        None by default
-        If video_capture is True, a window showing the current capture of the connected camera system is displayed with bounding boxes
+            None by default
+            If video_capture is True, a window showing the current capture of the connected camera system is displayed with bounding boxes
         """
         if self.YOLO:
             detector = YOLO_main(self.data_path, self.image_path, self.image_number, self.YOLO_model, self.video_path, self.video_capture)
@@ -519,26 +543,27 @@ class ML_post_process(ML_meta):
     """
     A class that handles the post-processing functionality of any saved ML models.
 
-    Args: 
-    model - Input model saved as .pkl - Binary Machine Learning Model string name
-    data - Input dataframe in the same format as the data used to test to train the model, i.e. the same labelled columns
-    predict - Whether or not to predict on input data - Boolean True or False
-    target - The name of the target feature - String
-    con_cols - The continuous column names - String or list of strings
-
-    univariate analysis - method that takes a string to perform exploratory data analysis on an input data set. string inputs include:
-        - 'output' plots the target variable output as a bar graph
-        - 'corr' plots the correlation matrices between features
-        - 'pair' plots the pairwise relationships in the input dataset
-        - 'kde' kernel density estimate plot of a feature against the target - input string is the name of the feature
-    
-    
-    Returns:
-    None
-
  
     """
     def __init__(self, data, saved_model=None, predict=False, target=None, con_cols=None, feature=None):
+        """
+        Args: 
+            model: Input model saved as .pkl - Binary Machine Learning Model string name
+            data: Input dataframe in the same format as the data used to test to train the model, i.e. the same labelled columns
+            predict: Whether or not to predict on input data - Boolean True or False
+            target: The name of the target feature - String
+            con_cols: The continuous column names - String or list of strings
+
+        univariate analysis - method that takes a string to perform exploratory data analysis on an input data set. string inputs include:
+            - 'output' plots the target variable output as a bar graph
+            - 'corr' plots the correlation matrices between features
+            - 'pair' plots the pairwise relationships in the input dataset
+            - 'kde' kernel density estimate plot of a feature against the target - input string is the name of the feature
+    
+    
+        Returns:
+            None
+        """
         self.saved_model = saved_model
         #self.X_test = X_test
         self.predict = predict
@@ -552,11 +577,11 @@ class ML_post_process(ML_meta):
         Function to call the split data method from BaseMLClasses.py 
 
         Args:
-        encode_categorical - method to encode categorical data - Boolean True or False
-        target -  string of the name of the target variable in the dataset - String
+            encode_categorical - method to encode categorical data - Boolean True or False
+            target -  string of the name of the target variable in the dataset - String
 
         Returns:
-        X and y data
+            X and y data
         """
 
         ml = self.call_ML()
@@ -572,10 +597,10 @@ class ML_post_process(ML_meta):
         data method
 
         Args:
-        None
+            None
 
         Returns:
-        pandas.DataFrame: The X_test data.
+            pandas.DataFrame: The X_test data
         """
 
         X, y = self.split_data()
@@ -592,10 +617,10 @@ class ML_post_process(ML_meta):
         (Currently only pickled .pkl formatted networks are permitted)
 
         Args:
-        None
+            None
 
         Returns:
-        numpy.ndarray: The prediction results.
+            numpy.ndarray: The prediction results
         """
         if self.saved_model is not None:
             saved_predictions= []
@@ -628,10 +653,10 @@ class ML_post_process(ML_meta):
         A simple method to output various information on the dataset, such as the shape, values, and unique counts
 
         Args: 
-        None
+            None
 
         Returns:
-        None
+            None
         """
         print("The shape of the dataset is " + str(self.data.shape))
         print(self.data.head())
@@ -643,66 +668,67 @@ class ML_post_process(ML_meta):
         print(self.data.describe().transpose())
 
     def target_plot(self):
-            """
-            Plots the target variable distribution.
+        """
+        Plots the target variable distribution.
 
-            No arguments.
+        Args:
+            None
 
-            Returns:
-                None.
-            """
-            fig = plt.figure(figsize=(18,7))
-            gs =fig.add_gridspec(1,2)
-            gs.update(wspace=0.3, hspace=0.3)
-            ax0 = fig.add_subplot(gs[0,0])
-            ax1 = fig.add_subplot(gs[0,1])
+        Returns:
+            None
+        """
+        fig = plt.figure(figsize=(18,7))
+        gs =fig.add_gridspec(1,2)
+        gs.update(wspace=0.3, hspace=0.3)
+        ax0 = fig.add_subplot(gs[0,0])
+        ax1 = fig.add_subplot(gs[0,1])
 
-            background_color = "#ffe6f3"
-            color_palette = ["#800000","#8000ff","#6aac90","#da8829"]
-            fig.patch.set_facecolor(background_color) 
-            ax0.set_facecolor(background_color) 
-            ax1.set_facecolor(background_color) 
+        background_color = "#ffe6f3"
+        color_palette = ["#800000","#8000ff","#6aac90","#da8829"]
+        fig.patch.set_facecolor(background_color) 
+        ax0.set_facecolor(background_color) 
+        ax1.set_facecolor(background_color) 
 
-            # Title of the plot
-            ax0.text(0.5,0.5,"Target Count\n",
-                    horizontalalignment = 'center',
-                    verticalalignment = 'center',
-                    fontsize = 20,
-                    fontweight='bold',
-                    fontfamily='serif',
-                    color='#000000')
+        # Title of the plot
+        ax0.text(0.5,0.5,"Target Count\n",
+                horizontalalignment = 'center',
+                verticalalignment = 'center',
+                fontsize = 20,
+                fontweight='bold',
+                fontfamily='serif',
+                color='#000000')
 
-            ax0.set_xticklabels([])
-            ax0.set_yticklabels([])
-            ax0.tick_params(left=False, bottom=False)
+        ax0.set_xticklabels([])
+        ax0.set_yticklabels([])
+        ax0.tick_params(left=False, bottom=False)
 
-            # Target Count
-            ax1.text(0.35,177,"Output",fontsize=14, fontweight='bold', fontfamily='serif', color="#000000")
-            ax1.grid(color='#000000', linestyle=':', axis='y', zorder=0,  dashes=(1,5))
-            sns.countplot(ax=ax1, data = self.data, x = self.target, palette=["#8000ff","#da8829"])
-            ax1.set_xlabel("")
-            ax1.set_ylabel("")
-            #ax1.set_xticklabels([" "])
+        # Target Count
+        ax1.text(0.35,177,"Output",fontsize=14, fontweight='bold', fontfamily='serif', color="#000000")
+        ax1.grid(color='#000000', linestyle=':', axis='y', zorder=0,  dashes=(1,5))
+        sns.countplot(ax=ax1, data = self.data, x = self.target, palette=["#8000ff","#da8829"])
+        ax1.set_xlabel("")
+        ax1.set_ylabel("")
+        #ax1.set_xticklabels([" "])
 
-            ax0.spines["top"].set_visible(False)
-            ax0.spines["left"].set_visible(False)
-            ax0.spines["bottom"].set_visible(False)
-            ax0.spines["right"].set_visible(False)
-            ax1.spines["top"].set_visible(False)
-            ax1.spines["left"].set_visible(False)
-            ax1.spines["right"].set_visible(False)
+        ax0.spines["top"].set_visible(False)
+        ax0.spines["left"].set_visible(False)
+        ax0.spines["bottom"].set_visible(False)
+        ax0.spines["right"].set_visible(False)
+        ax1.spines["top"].set_visible(False)
+        ax1.spines["left"].set_visible(False)
+        ax1.spines["right"].set_visible(False)
 
-            plt.show()
+        plt.show()
 
     def corr_plot(self):
         """
         Plots the correlation matrix between parameters of the input dataset.
 
         Args:
-        None
+            None
 
         Returns:
-        None
+            None
         """
         df_corr = self.data[self.con_cols].corr().transpose()
         df_corr
@@ -744,10 +770,11 @@ class ML_post_process(ML_meta):
         """
         (Unused) Method intended to plot the linearity of features in the dataset.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         plt.figure(figsize=(18,18))
         for i, col in enumerate(self.data.columns, 1):
@@ -762,10 +789,11 @@ class ML_post_process(ML_meta):
         """
         Plots the pairwise relationships between the parameters within the dataset.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         sns.pairplot(self.data, hue=self.target, palette=["#8000ff","#da8829"])
         plt.show()
@@ -776,10 +804,11 @@ class ML_post_process(ML_meta):
         """
         Plots the Kernel Density Estimate (KDE) to visualise the distribution of observations within the dataset.
 
-        No arguments.
+        Args:
+            None
 
         Returns:
-            None.
+            None
         """
         fig = plt.figure(figsize=(18,18))
         gs = fig.add_gridspec(1,2)
@@ -826,10 +855,10 @@ class ML_post_process(ML_meta):
         Performs univariate analysis for the features within the dataset, calling one of the available methods.
 
         Args:
-            output_plot (str, optional): Type of analysis to perform. One of: 'output', 'corr', 'pair', 'kde', or 'linearality'.
+            output_plot (str, optional): Type of analysis to perform. One of: 'output', 'corr', 'pair', 'kde', or 'linearality'
 
         Returns:
-            None.
+            None
         """
         try:
             if output_plot == 'output':
@@ -846,7 +875,7 @@ class ML_post_process(ML_meta):
             print("Invalid argument given to method, please select one of: 'output', 'corr', 'pair', 'kde', or 'linerality'")
 
 if __name__ == "__main__":
-        # Initialise the meta class
+    # Initialise the meta class
     meta_obj = ML_meta(data, all=False, model="MLP")
     meta_obj.apply_single_model()
     

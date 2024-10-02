@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data - {{ info.filename }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4">Data from {{ info.filename }}</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Basic Information</h2>
+                <p><strong>Shape:</strong> {{ info.shape[0] }} rows, {{ info.shape[1] }} columns</p>
+                <h3>Columns:</h3>
+                <ul class="list-group">
+                    {% for column, dtype in info.dtypes.items() %}
+                    <li class="list-group-item">{{ column }} <span class="badge badge-primary float-right">{{ dtype }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <h3>Preview:</h3>
+                <div class="table-responsive">
+                    {{ info.head|safe }}
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mt-5 mb-4">Apply Machine Learning Model</h2>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form id="ml-form">
+                    <input type="hidden" name="filename" value="{{ info.filename }}">
+                    <div class="form-group">
+                        <label for="model-select">Select Model:</label>
+                        <select class="form-control" id="model-select" name="model_type">
+                            <option value="linear_regression">Linear Regression</option>
+                            <option value="logistic_regression">Logistic Regression</option>
+                            <option value="random_forest">Random Forest</option>
+                            <option value="support_vector_machine">Support Vector Machine</option>
+                            <option value="naive_bayes">Naive Bayes</option>
+                            <option value="decision_tree">Decision Tree</option>
+                            <option value="voting_classifier">Voting Classifier</option>
+                            <option value="ada_boost">Ada Boosted Classifier</option>
+                            <option value="gradient_boost">Gradient Boosted Classifier</option>
+                            <option value="k_nearest">K Nearest Neighbour</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-select">Select Target Column:</label>
+                        <select class="form-control" id="target-select" name="target_column">
+                            {% for column in info.columns %}
+                            <option value="{{ column }}">{{ column }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Apply Model</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#ml-form').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/apply_model',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').html(`
+                            <h3>Model Results</h3>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item"><strong>Model:</strong> ${response.model_type}</li>
+                                <li class="list-group-item"><strong>Target Column:</strong> ${response.target_column}</li>
+                                <li class="list-group-item"><strong>${response.metric}:</strong> ${response.score.toFixed(4)}</li>
+                            </ul>
+                            <button id="save-model" class="btn btn-success btn-block">Save Model</button>
+                        `);
+                        console.log(response.score);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        $('#result').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+                    }
+                });
+            });
+
+            $(document).on('click', '#save-model', function() {
+                $.ajax({
+                    url: '/save_model',
+                    type: 'POST',
+                    data: $('#ml-form').serialize(),
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('An error occurred while saving the model.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

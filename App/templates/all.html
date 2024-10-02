@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data - {{ info.filename }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4">Data from {{ info.filename }}</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Basic Information</h2>
+                <p><strong>Shape:</strong> {{ info.shape[0] }} rows, {{ info.shape[1] }} columns</p>
+                <h3>Columns:</h3>
+                <ul class="list-group">
+                    {% for column, dtype in info.dtypes.items() %}
+                    <li class="list-group-item">{{ column }} <span class="badge badge-primary float-right">{{ dtype }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <h3>Preview:</h3>
+                <div class="table-responsive">
+                    {{ info.head|safe }}
+                </div>
+            </div>
+        </div>

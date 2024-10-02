@@ -1,0 +1,158 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    border-bottom: 2px solid #5C1881;
+    padding-bottom: 10px;
+}
+
+.drop-zone {
+    background-color: #ffffff;
+    border: 2px dashed #3498db;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.drop-zone:hover, .drop-zone.dragover {
+    background-color: #e8f4ff;
+    border-color: #2980b9;
+}
+
+.drop-zone p {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+#file-list {
+    margin-top: 20px;
+}
+
+#file-list p {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+#file-list p:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#file-list a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+#file-list a:hover {
+    text-decoration: underline;
+}
+
+#file-list2 {
+    margin-top: 20px;
+}
+
+#file-list2 p {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+#file-list2 p:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#file-list2 a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+#file-list2 a:hover {
+    text-decoration: underline;
+}
+
+.table {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table thead th {
+    background-color: #3498db;
+    color: #ffffff;
+    border-color: #2980b9;
+}
+
+#ml-form {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+#result {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-responsive table {
+    margin-bottom: 0;
+}
+
+.preview-table {
+    font-size: 0.9rem;
+}
+
+.preview-table th {
+    white-space: nowrap;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

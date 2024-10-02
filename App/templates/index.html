@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEIMDALL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+</head>
+<body>
+    
+    <div class="container">
+        
+        <img src="{{ url_for('static', filename='images/LOGO_NOBG.png') }}"
+    class="center"
+    width: 20%;
+    height: auto;
+    >
+        <h2 class="text-center mb-5">File Drag and Drop Upload</h2>
+        <div id="drop-zone" class="drop-zone">
+            <p>Drag and drop files here or click to select</p>
+            <input type="file" id="file-input" multiple style="display: none;">
+        </div>
+        <div id="file-list" class="mt-4"></div>
+        <div id="file-list2" class="mt-4"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/drag.js') }}"></script>
+</body>
+</html>

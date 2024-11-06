@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Implementation Guide</title>
+    
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .guide-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 30px auto;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tip-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #e83e8c;
+        }
+
+        .table-example {
+            font-size: 0.9rem;
+            margin: 15px 0;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .form-check-input:checked {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container guide-container">
+        <div class="container">
+            <a href =  "{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/LOGO_NOBG.png') }}"
+        class="center"
+        width: 20%;
+        height: auto;
+        
+        >
+        </a>
+        </div>
+        <h1 class="text-center mb-5">  CNN Best Practices and Implementation Guide </h1>
+        </div>
+
+        <div class="section">
+            <h3>1. Architecture Requirements</h3>
+            <ul>
+                <li>Input layer must match image dimensions and channels</li>
+                <li>Convolutional layers followed by pooling layers</li>
+                <li>Final layers should include flatten and dense layers</li>
+                <li>Output layer should match number of classes (classification) or desired output dimension (regression)</li>
+            </ul>
+            <div class="tip-box">
+                <strong>Tip:</strong> Start with a simple architecture and gradually add complexity as needed.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>2. Layer Configuration Checklist</h3>
+            <ul>
+                <li>Convolutional Layers:
+                    <ul>
+                        <li>Select appropriate kernel size (e.g., 3x3, 5x5)</li>
+                        <li>Choose number of filters</li>
+                        <li>Set stride and padding parameters</li>
+                        <li>Select activation function (typically ReLU)</li>
+                    </ul>
+                </li>
+                <li>Pooling Layers:
+                    <ul>
+                        <li>Choose pooling type (max pooling or average pooling)</li>
+                        <li>Set pool size and stride</li>
+                    </ul>
+                </li>
+                <li>Dense Layers:
+                    <ul>
+                        <li>Determine number of neurons</li>
+                        <li>Select appropriate activation functions</li>
+                        <li>Add dropout for regularisation</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="warning-box">
+                <strong>Warning:</strong> Too many layers can lead to vanishing gradients or overfitting. Consider the trade-off between model depth and performance.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. Parameter Types and Configurations</h3>
+            <table class="table table-bordered table-example">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Layer Type</th>
+                        <th>Parameters</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Convolutional</td>
+                        <td>Filters, Kernel Size</td>
+                        <td><code>Conv2D(32, (3,3), activation='relu')</code></td>
+                    </tr>
+                    <tr>
+                        <td>Pooling</td>
+                        <td>Pool Size, Stride</td>
+                        <td><code>MaxPooling2D(2,2)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Dense</td>
+                        <td>Units, Activation</td>
+                        <td><code>Dense(128, activation='relu')</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>4. Data Preprocessing Guidelines</h3>
+            <ul>
+                <li>Normalise pixel values (typically to [0,1] or [-1,1])</li>
+                <li>Apply data augmentation:
+                    <ul>
+                        <li>Random rotations</li>
+                        <li>Horizontal/vertical flips</li>
+                        <li>Zoom/scale adjustments</li>
+                        <li>Brightness/contrast modifications</li>
+                    </ul>
+                </li>
+                <li>Resize images to consistent dimensions</li>
+                <li>Handle color channels appropriately (RGB vs grayscale)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>5. Training Considerations</h3>
+            <ul>
+                <li>Batch size selection (typically 32, 64, or 128)</li>
+                <li>Learning rate optimisation</li>
+                <li>Choose appropriate optimiser (Adam, SGD with momentum)</li>
+                <li>Implement learning rate scheduling</li>
+                <li>Use early stopping to prevent overfitting</li>
+                <li>Monitor validation metrics</li>
+            </ul>
+            <div class="tip-box">
+                <strong>Tip:</strong> Use validation data to tune hyperparameters and prevent overfitting:
+                <ul>
+                    <li>Learning rate adjustments</li>
+                    <li>Batch size modifications</li>
+                    <li>Architecture changes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>6. Common Mistakes to Avoid</h3>
+            <ul>
+                <li>Insufficient data preprocessing</li>
+                <li>Poor architecture design choices</li>
+                <li>Inappropriate learning rate selection</li>
+                <li>Not using data augmentation when needed</li>
+                <li>Ignoring class imbalance</li>
+                <li>Not monitoring training metrics</li>
+            </ul>
+            <div class="warning-box">
+                <strong>Important:</strong> Always validate your model's performance on a separate test set to ensure generalisation.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>7. Implementation Checklist</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-example">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Task</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data preprocessed and normalised</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Architecture designed and verified</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Data augmentation implemented</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Training parameters configured</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Validation strategy defined</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Regularisation techniques implemented</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Model evaluation metrics selected</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>GPU resources configured (if available)</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="saveChecklist()">Save Checklist</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChecklist();
+        });
+
+        function saveChecklist() {
+            const checkboxes = document.querySelectorAll('.form-check-input');
+            const checklistState = Array.from(checkboxes).map(checkbox => checkbox.checked);
+            localStorage.setItem('cnnChecklist', JSON.stringify(checklistState));
+            alert('Checklist saved!');
+        }
+
+        function loadChecklist() {
+            const savedState = localStorage.getItem('cnnChecklist');
+            if (savedState) {
+                const checklistState = JSON.parse(savedState);
+                const checkboxes = document.querySelectorAll('.form-check-input');
+                checkboxes.forEach((checkbox, index) => {
+                    checkbox.checked = checklistState[index];
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Preparation Guide</title>
+    
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .guide-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 30px auto;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tip-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #e83e8c;
+        }
+
+        .table-example {
+            font-size: 0.9rem;
+            margin: 15px 0;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .form-check-input:checked {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container guide-container">
+        <div class="container">
+            <a href =  "{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/LOGO_NOBG.png') }}"
+        class="center"
+        width: 20%;
+        height: auto;
+        
+        >
+        </a>
+        </div>
+        <h1 class="text-center mb-5">  Dataset Preparation Guide for Machine Learning </h1>
+        </div>
+        <div class="section">
+            <h3>1. Data Format Requirements</h3>
+            <ul>
+                <li>File format should be CSV (Comma Separated Values)</li>
+                <li>First row must contain column headers</li>
+                <li>Each column should represent a feature or the target variable</li>
+                <li>Each row should represent a single observation/sample</li>
+            </ul>
+            <div class="tip-box">
+                <strong>Tip:</strong> Ensure your CSV file is properly encoded (UTF-8 recommended) to avoid character encoding issues.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>2. Data Cleaning Checklist</h3>
+            <ul>
+                <li>Remove duplicate entries</li>
+                <li>Handle missing values:
+                    <ul>
+                        <li>Remove rows with missing values</li>
+                        <li>Or fill missing values with mean/median/mode</li>
+                        <li>Or use appropriate imputation methods</li>
+                    </ul>
+                </li>
+                <li>Remove irrelevant columns (e.g., ID numbers, timestamps if not relevant)</li>
+                <li>Fix inconsistent data (e.g., "Male"/"M", "Female"/"F")</li>
+            </ul>
+            <div class="warning-box">
+                <strong>Warning:</strong> Removing too many rows with missing values might lead to data loss. Consider the trade-off between data completeness and dataset size.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. Data Type Requirements</h3>
+            <p>Your dataset should contain only the following types of data:</p>
+            <table class="table table-bordered table-example">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Numeric</td>
+                        <td>Continuous or discrete numbers</td>
+                        <td>Age: 25, Price: 199.99</td>
+                    </tr>
+                    <tr>
+                        <td>Categorical</td>
+                        <td>Finite set of categories</td>
+                        <td>Colour: Red/Blue/Green</td>
+                    </tr>
+                    <tr>
+                        <td>Binary</td>
+                        <td>Two possible values</td>
+                        <td>Yes/No, True/False</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>4. Feature Engineering Guidelines</h3>
+            <ul>
+                <li>Convert categorical variables to numeric:
+                    <ul>
+                        <li>Use one-hot encoding for nominal categories</li>
+                        <li>Use label encoding for ordinal categories</li>
+                    </ul>
+                </li>
+                <li>Scale numerical features:
+                    <ul>
+                        <li>Standardisation (zero mean, unit variance)</li>
+                        <li>Min-Max scaling (scale to specific range)</li>
+                    </ul>
+                </li>
+                <li>Handle outliers appropriately</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>5. Dataset Size Considerations</h3>
+            <ul>
+                <li>Minimum recommended size: 50 samples per feature</li>
+                <li>Balanced classes for classification problems</li>
+                <li>Representative sample of the population</li>
+            </ul>
+            <div class="tip-box">
+                <strong>Tip:</strong> If your dataset is imbalanced, consider using techniques like:
+                <ul>
+                    <li>Oversampling (SMOTE)</li>
+                    <li>Undersampling</li>
+                    <li>Class weights</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>6. Common Mistakes to Avoid</h3>
+            <ul>
+                <li>Data leakage (including target-related information in features)</li>
+                <li>Inconsistent data formats (e.g., dates in different formats)</li>
+                <li>Mixed data types in single columns</li>
+                <li>Incorrect handling of categorical variables</li>
+                <li>Not addressing multicollinearity</li>
+            </ul>
+            <div class="warning-box">
+                <strong>Important:</strong> Always validate your dataset structure and content before training models to avoid errors during the training process.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>7. Final Checklist</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-example">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Task</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data is in CSV format</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>No missing values</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Categorical variables encoded</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Numerical features scaled</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>No data leakage</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                        <tr>
+                            <td>Classes balanced (for classification)</td>
+                            <td><input type="checkbox" class="form-check-input ml-1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary mt-3" onclick="saveChecklist()">Save Checklist</button>
+        </div>
+    </div>
+
+    <script>
+        // Load saved checklist state when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChecklist();
+        });
+
+        // Save checklist state
+        function saveChecklist() {
+            const checkboxes = document.querySelectorAll('.form-check-input');
+            const checklistState = Array.from(checkboxes).map(checkbox => checkbox.checked);
+            localStorage.setItem('datasetChecklist', JSON.stringify(checklistState));
+            alert('Checklist saved!');
+        }
+
+        // Load checklist state
+        function loadChecklist() {
+            const savedState = localStorage.getItem('datasetChecklist');
+            if (savedState) {
+                const checklistState = JSON.parse(savedState);
+                const checkboxes = document.querySelectorAll('.form-check-input');
+                checkboxes.forEach((checkbox, index) => {
+                    checkbox.checked = checklistState[index];
+                });
+            }
+        }
+    </script>
+</body>
+</html>

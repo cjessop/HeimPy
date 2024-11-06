@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/plotly_offline.js') }}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Data - {{ info.filename }}</title>
@@ -8,11 +10,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
 </head>
 <body>
     <div class="container-fluid mt-5">
-        <h1 class="mb-4">Data from {{ info.filename }}</h1>
+        <h1 class="mb-4" style="text-align: center;">Data from {{ info.filename }}</h1>
         <div class="row">
             <div class="col-md-4">
                 <h2>Basic Information</h2>
@@ -31,8 +32,176 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <h2 class="mt-5 mb-4">Apply Machine Learning Model</h2>
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4" style="text-align: center;">Statistical Analysis for {{ info.filename }}</h1>
+        <!-- Dataset Overview -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dataset Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">Total Variables <span class="badge badge-primary float-right">{{ stats_info.length }}</span></li>
+                            <li class="list-group-item">Total Observations <span class="badge badge-primary float-right">{{ stats_info.obs_num }}</span></li>
+                            <li class="list-group-item">Missing Values <span class="badge badge-warning float-right">{{ stats_info.missing_values }}</span></li>
+                            <li class="list-group-item">Duplicated Rows <span class="badge badge-info float-right">{{ stats_info.duplicates }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Data Type Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">Numerical Columns <span class="badge badge-primary float-right">{{ stats_info.num_columns }}</span></li>
+                            <li class="list-group-item">Categorical Columns <span class="badge badge-success float-right">{{ stats_info.cat_columns }}</span></li>
+                            <li class="list-group-item">DateTime Columns <span class="badge badge-info float-right">{{ stats_info.date_columns }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Descriptive Statistics -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Descriptive Statistics</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Column</th>
+                                <th>Mean</th>
+                                <th>Mode</th>
+                                <th>Median</th>
+                                <th>Std Dev</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>Q1 (25%)</th>
+                                <th>Q3 (75%)</th>
+                                <th>Skewness</th>
+                                <th>Kurtosis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for column in stats_info.average_val.keys() %}
+                            <tr>
+                                <td>{{ column }}</td>
+                                <td>{{ stats_info.average_val[column] }}</td>
+                                <td>{{ stats_info.mode_val[column] }}</td>
+                                <td>{{ stats_info.median_val[column] }}</td>
+                                <td>{{ stats_info.std_val[column] }}</td>
+                                <td>{{ stats_info.min_val[column] }}</td>
+                                <td>{{ stats_info.max_val[column] }}</td>
+                                <td>{{ stats_info.q1_val[column] }}</td>
+                                <td>{{ stats_info.q3_val[column] }}</td>
+                                <td>{{ stats_info.skew_val[column] }}</td>
+                                <td>{{ stats_info.kurt_val[column] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Correlation Matrix -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Correlation Matrix</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {{ stats_info.correlation_matrix|safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorical Value Counts -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Categorical Value Distributions</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for column, counts in stats_info.value_counts.items() %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>{{ column }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Value</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for value, count in counts.items() %}
+                                        <tr>
+                                            <td>{{ value }}</td>
+                                            <td>{{ count }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-5">
+        <h2 class="mb-4" style="text-align: center;">Data Visualisations</h2>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Numerical Distributions</h3>
+            </div>
+            <div class="card-body">
+                <div id="histograms" style="width:100%;height:600px;"></div>
+                <div id="boxplots" style="width:100%;height:600px;"></div>
+            </div>
+        </div>
+    
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Categorical Distributions</h3>
+            </div>
+            <div class="card-body">
+                <div id="bar-charts" style="width:100%;height:600px;"></div>
+            </div>
+        </div>
+    
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Correlation Heatmap</h3>
+            </div>
+            <div class="card-body">
+                <div id="correlation-heatmap" style="width:100%;height:600px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <!-- Machine Learning Section -->
+    <div class="container-fluid mt-5">
+        <h2 class="mb-4" style="text-align: center;">Apply Machine Learning Model</h2>
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form id="ml-form">
@@ -41,7 +210,6 @@
                         <label for="model-select">Select Model:</label>
                         <select class="form-control" id="model-select" name="model_type">
                             <option value="linear_regression">Linear Regression</option>
-                            <option value="logistic_regression">Logistic Regression</option>
                             <option value="random_forest">Random Forest</option>
                             <option value="support_vector_machine">Support Vector Machine</option>
                             <option value="naive_bayes">Naive Bayes</option>
@@ -60,6 +228,15 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="Save Format">Save Format:</label>
+                        <select class="form-control" id="save-state" name="save_state">
+                            <option value="None">No Save</option>
+                            <option value="pickle">Pickle</option>
+                            <option value="onnx">ONNX</option>
+                            <option value="joblib">joblib</option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary btn-block">Apply Model</button>
                 </form>
             </div>
@@ -71,7 +248,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery_offline.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#ml-form').submit(function(e) {
@@ -90,7 +267,6 @@
                             </ul>
                             <button id="save-model" class="btn btn-success btn-block">Save Model</button>
                         `);
-                        console.log(response.score);
                     },
                     error: function(error) {
                         console.log(error);
@@ -114,6 +290,76 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        var plots_data = JSON.parse('{{ plots_data|safe }}');
+        
+        // Render histograms
+        var histogramTraces = Object.entries(plots_data.histograms).map(([column, data]) => ({
+            ...data,
+            name: column
+        }));
+        Plotly.newPlot('histograms', histogramTraces, {title: 'Histograms', barmode: 'overlay'});
+
+        // Render boxplots
+        var boxplotTraces = Object.entries(plots_data.boxplots).map(([column, data]) => ({
+            ...data,
+            name: column
+        }));
+        Plotly.newPlot('boxplots', boxplotTraces, {title: 'Boxplots'});
+
+        // Render bar charts
+        var barChartTraces = Object.entries(plots_data.bar_charts).map(([column, data]) => ({
+            ...data,
+            name: column
+        }));
+        Plotly.newPlot('bar-charts', barChartTraces, {title: 'Bar Charts'});
+
+        // Render correlation heatmap
+        if (plots_data.correlation && Object.keys(plots_data.correlation).length > 0) {
+            Plotly.newPlot('correlation-heatmap', [plots_data.correlation], {title: 'Correlation Heatmap'});
+        } else {
+            document.getElementById('correlation-heatmap').innerHTML = 'No correlation data available';
+        }
+    </script>
+
+    <!-- Add these div elements where you want the plots to appear -->
+    {% for column in info.columns %}
+        {% if column in plots_data.histograms %}
+            <div id="histogram-{{ column }}" style="width:100%;height:400px;"></div>
+            <script>
+                var data = JSON.parse('{{ plots_data.histograms[column]|tojson|safe }}');
+                Plotly.newPlot('histogram-{{ column }}', [data]);
+            </script>
+        {% endif %}
+        
+        {% if column in plots_data.boxplots %}
+            <div id="boxplot-{{ column }}" style="width:100%;height:400px;"></div>
+            <script>
+                var data = JSON.parse('{{ plots_data.boxplots[column]|tojson|safe }}');
+                Plotly.newPlot('boxplot-{{ column }}', [data]);
+            </script>
+        {% endif %}
+        
+        {% if column in plots_data.bar_charts %}
+            <div id="barchart-{{ column }}" style="width:100%;height:400px;"></div>
+            <script>
+                var data = JSON.parse('{{ plots_data.bar_charts[column]|tojson|safe }}');
+                Plotly.newPlot('barchart-{{ column }}', [data]);
+            </script>
+        {% endif %}
+    {% endfor %}
+
+    <div id="correlation-heatmap" style="width:100%;height:600px;"></div>
+    <script>
+        var plots_data = JSON.parse('{{ plots_data|tojson|safe }}');
+        if (plots_data.correlation && Object.keys(plots_data.correlation).length > 0) {
+            var data = plots_data.correlation;
+            Plotly.newPlot('correlation-heatmap', [data]);
+        } else {
+            document.getElementById('correlation-heatmap').innerHTML = 'No correlation data available';
+        }
     </script>
 </body>
 </html>

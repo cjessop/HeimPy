@@ -11,30 +11,13 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
 </head>
 <body>
-    <p class="version-warning"><strong>Warning:</strong> Make sure that you have prepared your dataset sufficiently <a href="{{ url_for('dataset_guide') }}"> - Guide for dataset prep</a>.</p>
     
     <div class="container">
-        <a href =  "{{ url_for('index') }}">
+        
         <img src="{{ url_for('static', filename='images/LOGO_NOBG.png') }}"
     class="center"
     width: 20%;
     height: auto;
-    
     >
-    </a>
-
-        <h2 class="text-center mb-5">File Drag and Drop Upload</h2>
-        <div id="drop-zone" class="drop-zone">
-            <p>Drag and drop files here or click to select</p>
-            <input type="file" id="file-input" multiple style="display: none;">
-        </div>
-        <div id="file-list" class="mt-4"></div>
-        <div id="file-list2" class="mt-4"></div>
-    </div>
-    <script src="{{ url_for('static', filename='js/drag.js') }}"></script>
-
-    <div id="CNN select" class="container">
-        <p class="mt-4"><a href="{{ url_for('CNN') }}"> Build CNN</a></p>
-    </div>
 </body>
 </html>

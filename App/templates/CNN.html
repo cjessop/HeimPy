@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build CNN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon2.png') }}"/>
+</head>
+
+<body>
+    <p class="version-warning-cnn"><strong>Note:</strong> Make sure that you are up-to-date with the current best practices for implementing CNNs <a href="{{ url_for('cnn_guide') }}"> - Guide for CNN implementation</a>.</p>
+
+    <div class="container">
+        <a href =  "{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/LOGO_NOBG.png') }}"
+    class="center"
+    width: 20%;
+    height: auto;
+    
+    >
+    </a>
+
+
+    <div class="container-fluid mt-5">
+        <h2 class="mb-4" style="text-align: center;">Select Architecture</h2>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form id="ml-form">
+                    <input type="hidden" name="filename">
+                    <div class="form-group">
+                        <label for="model-select">Select Model:</label>
+                        <select class="form-control" id="model-select" name="model_type">
+                            <option value="tensorflow">TensorFlow</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-select">Architecture</label>
+                        <select class="form-control" id="architecture" name="architecture">
+                            <option value="Unet">UNET</option>
+                            <option value="VGG-16">VGG16</option>
+                            <option value="VGG-19">VGG19</option>
+                            <option value="Resnet">RESNET</option>
+                            <option value="Simple">SIMPLE</option>
+                            <option value="READ_CONFIG">READ FROM CONFIG</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Save Format">Save Format:</label>
+                        <select class="form-control" id="save-state" name="save_state">
+                            <option value="None">Don't Save</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Apply Model</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery_offline.js') }}"></script>
+    <script>
+
+            $(document).on('click', '#run-CNN', function() {
+                $.ajax({
+                    url: '/run_CNN',
+                    type: 'POST',
+                    data: $('#ml-form').serialize(),
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('An error occurred while saving the model.');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

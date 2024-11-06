@@ -31,3 +31,55 @@
                 </div>
             </div>
         </div>
+
+        <h2 class="mt-5 mb-4">Apply All Models</h2>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form id="ml-form">
+                    <input type="hidden" name="filename" value="{{ info.filename }}">
+                    <div class="form-group">
+                        <label for="target-select">Select Target Column:</label>
+                        <select class="form-control" id="target-select" name="target_column">
+                            {% for column in info.columns %}
+                            <option value="{{ column }}">{{ column }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Apply Model</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery_offline.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#ml-form').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/apply_all',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').html(`
+                            <h3>All Model Results</h3>
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item"><strong>${response.metric}:</strong> ${response.score.toFixed(4)}</li>
+                                <li class="list-group-item"><strong>Best Performing Model: </strong> ${response.best_model} - ${response.best_model_accuracy.toFixed(4)}</li>
+                            </ul>
+                        `);
+                        console.log(response.score);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        $('#result').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+                    }
+                });
+            });
+        });
+    </script>

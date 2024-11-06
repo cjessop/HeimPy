@@ -130,12 +130,14 @@ class ML_meta:
         Returns:
             None
         """
+        # Simple conditional to check if the help statement should be printed or not. Only invoked on if name main.
         if self.help is True:
             print("This is a meta class that handles the application of all ML models. The current models are: Support Vector Machine, \
                   Naive Bayes, Decision Tree, Logistic Regression, Multi-Layered Perceptron, Random Forest, k-Nearest-Neighbour, Ensemble Classifier (all models combined). \
                   Includes the call to instantiate the ML class and apply test-train split \n")
             print(ML_meta.__doc__)
 
+        # Another simple conditional to check if the any models exist in the pickle format, and if they do, delete them.
         if self.clean is True:
             delete_var = input("Are you sure you want to delete all saved models? (y/n)")
             if delete_var == "y" or delete_var == "Y":
@@ -176,22 +178,22 @@ class ML_meta:
         Returns:
             tuple: X and y data after splitting (and encoding if applicable)
         """
-        ml = self.call_ML()
-        X, y = ml.split_X_y(self.target)
-        if encode_categorical is True:
-            X, y = ml.encode_categorical(X, y)
+        ml = self.call_ML() # Assigns the instance of the ML class to the ml variable
+        X, y = ml.split_X_y(self.target) # Split the data into X and y (features and target)
+        if encode_categorical is True: # Conditional to check the requirement for encoding categorical features 
+            X, y = ml.encode_categorical(X, y) # Encode the categorical features (i.e. make them numerical)
         #if bool_missing_data:
-        X, y = ml.missing_data(X, y)
+        X, y = ml.missing_data(X, y) # Handle missing data (default uses the mean imputer method)
 
         return X, y
 
     # Applies multiple ML models and compares their scores
-    def apply_all_models(self, flag=False, data=None, target=None):
+    def apply_all_models(self, flag=True, data=None, target=None):
         """
         Applies multiple machine learning models to the dataset and compares their scores.
 
         Args:
-            flag (bool, optional): If True, applies the models. Defaults to False.
+            flag (bool, optional): If True, applies the models. Defaults to True.
             data: Input data (X_train)
             target: Label (y_train)
         
@@ -199,18 +201,20 @@ class ML_meta:
             None
         """
 
-        ml = self.call_ML()
+        ml = self.call_ML() # Assigns the instance of the ML class to the ml variable
 
+        # Conditional to check whether or not the the code is being called in the test suite
         if (self.test == False):
-            X, y = self.split_data(encode_categorical=True)
+            X, y = self.split_data(encode_categorical=True) # Split the data into feature and target sets
         else:
-            X, y = data, target
-
-        X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y)
-        if flag == False:
+            X, y = data, target # Explicity pipe in the data and target sets of data
+        # Use the other split data method from call_ML to split the data further into test and train sets (yes I know the naming is not great, deal with it)
+        X_train, X_test, y_train, y_test = self.call_ML().split_data(X, y) 
+        if flag == False: # I do not remember what this flag was for, too scared to remove it
             pass
         else:
-            rf = ml.rf(X_train, X_test, y_train, y_test)
+            # Assing the variables for each of the classic models to their corresponding method from the BaseMLClass instance
+            rf = ml.rf(X_train, X_test, y_train, y_test) 
             svm = ml.svm(X_train, X_test, y_train, y_test)
             knn = ml.knn(X_train, X_test, y_train, y_test)
             lr = ml.lr(X_train, X_test, y_train, y_test)
@@ -220,37 +224,52 @@ class ML_meta:
             gbc = ml.gbc(X_train, X_test, y_train, y_test)
             abc = ml.abc(X_train, X_test, y_train, y_test)
             
-            models = [rf, svm, knn, lr, nb, dt, ec, gbc, abc]
+            models = [rf, svm, knn, lr, nb, dt, ec, gbc, abc] # Put these into a list
 
             # Evaluate the performance of each model
-            scores = []
-            for model in models:
-                score = ml.model_score(model, X_test, y_test, cross_flag=False)
+            scores = [] # Create an empty list for storing the individual scores
+            for model in models: # Iterate through the models
+                score = ml.model_score(model, X_test, y_test, cross_flag=False) # Call the model_score method from BaseMLClasses on each model
                 # if ("Voting" in str(model)):
                 #     score_df["model VotingClassifier"] = score
                 # else:
                 #     score_df["model " + str(model)] = score
-                scores.append(score)
+                scores.append(score) # Assign the score to the scores list for each model
                 #scores.append(str(model))
             #column = [f"{item}" for item in models]
             #column = [f"Model {item}" for item in models]
             #score_df['Model'] = column
+            # Create a dictionary to store the key-value pairs for each model and its score from the list
+            scores_dict = {
+                            "rf": scores[0],
+                            "svm": scores[1],
+                            "knn": scores[2],
+                            "lr": scores[3],
+                            "nb": scores[4],
+                            "dt": scores[5],
+                            "ec": scores[6],
+                            "gbc": scores[7],
+                            "abc": scores[8]
+                           }
+            
+            max_model = max(scores_dict.items(), key=lambda k: k[1]) # Find the maximum value for the score and return its index
 
+            # Deprecated 
             for title in models:
                 column_names = [f"Model {title[0]} accuracy: " for title in models]
                 score_df = pd.DataFrame(columns=column_names)
 
             iterindex = 0
-            for i, name in score_df.items():
-                #print(iterindex)
-                for label, content in score_df.items():
-                    print(iterindex)
-                    print(f'label: {label}')
-                    print(f'content: {content}', sep='')
-                #print(i, name)
-                #print(score_df.loc[f'Model {title[0]} accuracy: '])
-                score_df.loc[f'Model {title[0]} accuracy: '] = scores[iterindex]
-                iterindex += 1 
+            # for i, name in score_df.items():
+            #     #print(iterindex)
+            #     for label, content in score_df.items():
+            #         print(iterindex)
+            #         print(f'label: {label}')
+            #         print(f'content: {content}', sep='')
+            #     #print(i, name)
+            #     #print(score_df.loc[f'Model {title[0]} accuracy: '])
+            #     score_df.loc[f'Model {title[0]} accuracy: '] = scores[iterindex]
+            #     iterindex += 1 
             #score_df[[f"Model {item} accuracy" for item in models]]
             # for i, row in score_df.iterrows():
             #     print(row)
@@ -258,7 +277,7 @@ class ML_meta:
             #print(scores)
             #score_df.to_csv("test_csv.csv", index=None)
 
-        return scores, rf, svm, knn, lr, nb, dt, ec, gbc, abc
+        return scores, rf, svm, knn, lr, nb, dt, ec, gbc, abc, max_model # Return all of these
     
     # Applies a specified single model
     def apply_single_model(self, cm=False, save_model='No', save_model_name='', data=None, target=None):
@@ -274,6 +293,7 @@ class ML_meta:
             Model object
             Accuracy parameter
         """
+        # Conditional to check whether or not the the code is being called in the test suite
         if (self.test == False):
             # Split data into features (X) and target (y) without categorical encoding
             X, y = self.split_data(encode_categorical=True)
@@ -296,11 +316,12 @@ class ML_meta:
                                         "AdaBooster": "ABC"
                                     }
 
-        model_list = []
-        model_list.append(self.model)
-        if self.model is not False:
-            ml_single_model = ML(self.data)
-            self.model_dict = {
+        model_list = [] # Create empty list to store the model
+        model_list.append(self.model) # Add the model to the list
+        if self.model is not False: # Check to make sure the list is not empty
+            ml_single_model = ML(self.data) # Instantiate the ml_single_model variable by constructing an instance of ML from BaseMLClasses
+            # Store each of the model methods as a dictionary value, accessed by using the corresponding key
+            self.model_dict = { 
                                         "SVM": ml_single_model.svm,
                                         "KNN": ml_single_model.knn,
                                         "LR": ml_single_model.lr,
@@ -313,55 +334,63 @@ class ML_meta:
                                         "GBC": ml_single_model.gbc,
                                         "ABC": ml_single_model.abc
                                     }
-            model = None
-            accuracy = None
+            model = None # Initialise the model variable (different than self.model, yes again, I know the names are not great lmao)
+            accuracy = None # Initialise the accuracy variable
 
-            if self.model in self.model_dict.keys():
+            if self.model in self.model_dict.keys(): # Iterate through the keys in the dictionary defined above
                 #print("Selected single model is " + str(self.model_dict[self.model]))
-                model, accuracy = self.model_dict[self.model](X_train, X_test, y_train, y_test)
+                model, accuracy = self.model_dict[self.model](X_train, X_test, y_train, y_test) # Call the corresponing method
                 # Perform hyperparameter tuning if requested
-                if self.search is not None:
-                    if self.model == "SVM":
+                if self.search is not None: # Check to see if the user requested hyperparameter search or not
+                    if self.model == "SVM": # Handle SVM functionality
+                        # Define the parameter grid for SVM
                         param_grid = {  
                                         'C': [0.1, 1, 10, 100, 1000], 
                                         'gamma': [1, 0.1, 0.01, 0.001, 0.0001], 
                                         'kernel': ['rbf']
                                         }
                         
-                    elif self.model == "KNN":
+                    elif self.model == "KNN": # Handle KNN functionality
+                        # Define the parameter grid for KNN
                         param_grid = { 
                                         'n_neighbors' : [5, 7, 9, 11, 13, 15],
                                         'weights' : ['uniform', 'distance'],
                                         'metric' : ['minkowski', 'euclidean', 'manhattan']
                                         }
 
-                    elif self.model == "NB":
+                    elif self.model == "NB": # Handle NB functionality
+                        # Define the parameter grid for NB
                         param_grid = { 'var_smoothin' : np.logspace(0, 9, num=100)}
 
-                    elif self.model == "RF":
+                    elif self.model == "RF": # Handle the RF functionality
+                        # Define the parameter grid for RF
                         param_grid = { 
                                         'n_estimators': [25, 50, 100, 150, 200],
                                         'max_features': ['auto', 'sqrt', 'log2', None],
                                         'max_depth': [3, 5, 7, 9, 11] 
                                         }
 
-                    elif self.model == "DT":
+                    elif self.model == "DT": # Handle the DT functionality
+                        # Define the parameter grid for DT
                         param_grid = { 
                                         'max_features': ['auto', 'sqrt'],
                                         'max_depth': 8 
                                         }
 
-                    elif self.model == "LR":
+                    elif self.model == "LR": # Handle the LR functionality  
+                        # Define the parameter grid for LR
                         param_grid = { 'solver' : ['lbfgs', 'sag', 'saga', 'newton-cg'] }
 
-                    elif self.model == "GBC":
+                    elif self.model == "GBC": # Handle the GBC functionality
+                        # Define the parameter grid for GBC
                         param_grid = { 
                                         'n_estimators': [25, 50, 100, 150, 200],
                                         'max_features': ['auto', 'sqrt', 'log2', None],
                                         'max_depth': [3, 5, 7, 9, 11] 
                                         }
 
-                    elif self.model == "ABC":
+                    elif self.model == "ABC": # Handle the ABC functionaility
+                        # Define the parameter grid for ABC
                         param_grid = { 
                                         'n_estimators': [25, 50, 100, 150, 200, 500],
                                         'algorithm': ['SAMME', 'SAMME.R', None],
@@ -369,37 +398,41 @@ class ML_meta:
                                         }
                                         #'max_depth': [1, 3, 5, 7, 9, 11] }
 
-                    else:
+                    else: # Handle exception (not really but it works for now)
                         print(f"Model '{self.model}' not found in model dictionary. Available models: {list(self.model_dict.keys())}")
                         pass
 
+                # Check for random grid search instead of grid search
                 if self.search == "random":
-                    random_ = ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid)
+                    random_ = ml_single_model.randomised_search(model, X_train, y_train, param_grid=param_grid) # Call the randomised_search method from BaseMLClasses
+                # Checkf for grid search instead of random search
                 elif self.search == "grid":
-                    grid = ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10)
+                    grid = ml_single_model.grid_search(model, param_grid, X_train, X_test, y_train, y_test, cv=10) # Call the grid_search method from BaseMLClasses (default CV=10)
+                # Check if K-fold Cross-Validation is requested
                 elif self.cross_val is not False:
-                    ml_single_model.cross_validation(model, X_train, y_train)  
+                    ml_single_model.cross_validation(model, X_train, y_train)  # Call the K-fold Cross-Validation method from BaseMLClasses
                 # else:
                 #     model = self.model_dict[self.model](X_train, X_test, y_train, y_test)
                  # Save the trained model if requested
                 if save_model.lower() == 'pickle':
-                    pickle.dump(model, open(save_model_name, 'wb'))
-                elif save_model.lower() == 'onnx':
+                    pickle.dump(model, open(save_model_name, 'wb')) # Save the model to disk in pickle format
+                elif save_model.lower() == 'onnx': 
+                    # Try except statement to import ONNX, assumed that the user might not have it installed
                     try: 
                         from skl2onnx import to_onnx
 
-                        onx = to_onnx(model, X[:1])
+                        onx = to_onnx(model, X[:1]) # Change the model format to ONNX
                         with open("rf_iris.onnx", "wb") as f:
-                            f.write(onx.SerializeToString())
+                            f.write(onx.SerializeToString()) # Write the model to disk in ONNX format
                     except Exception as e:
                         print(f"Import Error: {e}")
                     pass
                 # Plot the confusion matrix if requested
                 if cm is True:
-                    ML.plot_confusion_matrix(self, model, X_test, y_test)
+                    ML.plot_confusion_matrix(self, model, X_test, y_test) # Call the plot_confusion_matrix method from BaseMLClasses
 
                 
-                        
+        # Do we still need this??                
         self.misc()
         if self.search == "random":
             return model, accuracy, random_
@@ -584,12 +617,13 @@ class ML_post_process(ML_meta):
             X and y data
         """
 
-        ml = self.call_ML()
-        X, y = ml.split_X_y(self.target)
+        ml = self.call_ML() # Creates an instance of the ML class
+        X, y = ml.split_X_y(self.target) # Call the split_X_y method from BaseMLCLasses
+        # Conditional to check the requirment to encode categorical data
         if encode_categorical is True:
             X, y = ml.encode_categorical(X, y)
 
-        return X, y
+        return X, y # Returns the features and target after removing categorical data. Missing data not neccessarily a bad thing here
 
     def get_X_test(self):
         """
@@ -603,11 +637,11 @@ class ML_post_process(ML_meta):
             pandas.DataFrame: The X_test data
         """
 
-        X, y = self.split_data()
+        X, y = self.split_data() # Call the method defined directly above
         #X, y = self.split_data(encode_categorical=False)
-        _, X_test, _, _ = self.call_ML().split_data(X, y)
+        _, X_test, _, _ = self.call_ML().split_data(X, y) # Split the data into test and train sets, although only the X_test is what we want right now
 
-        return X_test
+        return X_test # Return the X_test
 
     def load_and_predict(self): 
         """
@@ -622,14 +656,15 @@ class ML_post_process(ML_meta):
         Returns:
             numpy.ndarray: The prediction results
         """
+        # Check to see if the model is from a model saved to disk or not
         if self.saved_model is not None:
-            saved_predictions= []
-            cwd = os.getcwd()
-            path = str(cwd)
-            pickled_model = pickle.load(open(self.model, 'rb'))
+            saved_predictions= [] # Create empty list to store the saved_predictions
+            cwd = os.getcwd() # Get the current working directory
+            path = str(cwd) # Set the path (not currently used)
+            pickled_model = pickle.load(open(self.model, 'rb')) # Load the saved model (only works for pickle format currently)
 
-        for filename in os.listdir():
-                try:
+        for filename in os.listdir(): # Iterate through the files in the current working directory
+                try: # Try except block to load the pickled model
                     if filename.endswith(".pkl"):
                         file = str(glob.glob('*.pkl')[0])
                         pickled_model = pickle.load(open(file, 'rb'))
@@ -637,7 +672,7 @@ class ML_post_process(ML_meta):
                         continue
 
                 except:
-                    print("Error loading " + str(self.model) + " Machine Learning model")
+                    print("Error loading " + str(self.model) + " Machine Learning model") # Handle error
 
         if self.predict == True:
             X_test = self.get_X_test()

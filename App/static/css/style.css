@@ -138,6 +138,13 @@ h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.table-responsive-stats {
+    overflow-x: auto;
+    max-width: 20%;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 .table-responsive table {
     margin-bottom: 0;
 }
@@ -156,3 +163,57 @@ h1 {
     margin-right: auto;
     width: 50%;
   }
+
+p.version-warning {
+top: 10px;
+position: sticky;
+
+margin: 10px 0;
+padding: 5px 10px;
+border-radius: 4px;
+
+letter-spacing: 1px;
+color: #fff;
+text-shadow: 0 0 2px #000;
+text-align: center;
+
+background: rgb(221, 0, 0) repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 56px,
+    rgba(255, 255, 255, 0.2) 56px,
+    rgba(255, 255, 255, 0.2) 112px
+);
+}
+
+p.version-warning-cnn {
+top: 10px;
+position: sticky;
+
+margin: 10px 0;
+padding: 5px 10px;
+border-radius: 4px;
+
+letter-spacing: 1px;
+color: #fff;
+text-shadow: 0 0 2px #000;
+text-align: center;
+
+background: rgb(122, 9, 197) repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 56px,
+    rgba(255, 255, 255, 0.2) 56px,
+    rgba(255, 255, 255, 0.2) 112px
+);
+}
+
+.plotly-graph {
+    min-height: 400px;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+#histograms, #boxplots, #bar-charts, #correlation-heatmap {
+    height: 500px;
+}

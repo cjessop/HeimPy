@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from importlib import import_module
-#from configuration.Config import config
+from Config import config
 from sklearn.model_selection import train_test_split
 
 #Import all necessary libraries for CNN training
@@ -95,7 +95,7 @@ class CNN_config():
 
         Args:
             path (str): Path to the configuration file.
-            optimizer: The optimizer to be used for model compilation.
+            optimizer: The optimizer to be used for model compilation. #American bullshit spelling
             loss: The loss function to be used for model compilation.
             metrics: The metrics to be used for model evaluation.
             train_images: Training image data.
@@ -152,7 +152,7 @@ class CNN_config():
 
             else:
                 if model is None:
-                    print("Model was not initialized properly")
+                    print("Model was not initialised properly")
                     return None  # or raise an exception
 
                 if "Rescaling" in config_list[item]:
